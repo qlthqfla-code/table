@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Department {
+  Computer
+  Communication
+  Architecture
+  Civil
+}
+
+// ---------------------------------------------------------------------------
+// Admin: uploads the master course sheet (Excel) and manages the catalog.
+// ---------------------------------------------------------------------------
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Student: creates account, builds one or more schedules.
+// ---------------------------------------------------------------------------
+model Student {
+  id           String     @id @default(cuid())
+  fullName     String
+  email        String     @unique
+  universityId String     @unique
+  passwordHash String
+  createdAt    DateTime   @default(now())
+  department   Department
+  // Cumulative GPA out of 4 — caps how many credit hours the student is
+  // allowed to register per term. See src/lib/creditLimit.ts.
+  gpa          Float      @default(0)
+
+  // courseCode values the student has already passed. Drives which courses
+  // are unlocked when building a schedule — see src/lib/prerequisites.ts.
+  completedCourseCodes  String[]  @default([])
+  // Set once the student goes through the "which courses have you passed"
+  // onboarding step. Null means they haven't yet — the proxy redirects
+  // them there before letting them reach /schedule.
+  completedCoursesSetAt DateTime?
+
+  schedules StudentSchedule[]
+}
+
+// ---------------------------------------------------------------------------
+// Subject: the college's full curriculum catalog (which courses exist, which
+// year/semester they belong to, and their real prerequisite chain) — seeded
+// from the reference flowsheet data, independent of what's actually
+// scheduled this term. This is what drives the "courses you've passed"
+// onboarding grid and the authoritative prerequisite lock, as opposed to
+// Course.prerequisites which only reflects whatever the admin typed into a
+// given term's Excel upload.
+// ---------------------------------------------------------------------------
+model Subject {
+  id            String     @id @default(cuid())
+  department    Department
+  courseCode    String
+  courseName    String
+  creditHours   Int
+  semester      Int // 1..10, odd = Fall, even = Spring; see src/lib/curriculum.ts
+  isTraining    Boolean    @default(false) // 0-credit summer/industrial training milestone
+  prerequisites String[]   @default([])
+  conditions    String[]   @default([]) // extra gates beyond prerequisites (credit-hour/GPA thresholds), informational only for now
+
+  @@unique([department, courseCode])
+}
+
+// ---------------------------------------------------------------------------
+// Course: one row = one offered section ("شعبة") of a subject. The same
+// courseCode can repeat across several rows when a subject has multiple
+// sections with different day/time/instructor/room.
+//
+// `prerequisites` stores the courseCode values a student must have completed
+// before taking this course. Kept on the model now (unused by the conflict
+// checker itself) so the prerequisite-chain feature can be built later
+// without a schema migration — see project-prompt.md section 4.
+// ---------------------------------------------------------------------------
+model Course {
+  id            String     @id @default(cuid())
+  // Each department's admin uploads and manages its own schedule
+  // independently — see /admin (per-department upload + table).
+  department    Department @default(Computer)
+  courseCode    String
+  courseName    String
+  creditHours   Int
+  prerequisites String[]   @default([])
+  section       String? // "شعبة/جروب" label, e.g. "A", "1" — optional
+  instructor    String?
+  room          String?
+  day           String // e.g. "Sunday" .. "Saturday"
+  startTime     String // 24h "HH:mm", stored as string for simple lexical/relational comparison
+  endTime       String // 24h "HH:mm"
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  scheduleItems StudentScheduleItem[]
+
+  @@index([courseCode])
+  @@index([department])
+}
+
+// ---------------------------------------------------------------------------
+// StudentSchedule: a saved, conflict-free set of course sections for a student.
+// ---------------------------------------------------------------------------
+model StudentSchedule {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  items StudentScheduleItem[]
+}
+
+model StudentScheduleItem {
+  id         String          @id @default(cuid())
+  scheduleId String
+  schedule   StudentSchedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  courseId   String
+  course     Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([scheduleId, courseId])
+}

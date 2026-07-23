@@ -1,0 +1,709 @@
+[
+  [
+    {
+      "semester": 1,
+      "id": "CHEn001",
+      "subjectName": "Chemistry",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MNFn003",
+      "subjectName": "Principles of Production Engineering",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "GENn042",
+      "subjectName": "English Language",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MNFn001",
+      "subjectName": "Engineering Graphics-1",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MECn001",
+      "subjectName": "Mechanics-1",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MTHn001",
+      "subjectName": "Mathematics-1 (Algebra and Calculus)",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "PHYn001",
+      "subjectName": "Physics-1",
+      "creditHours": 3,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 2,
+      "id": "CMPn010",
+      "subjectName": "Program Design and Computer Languages",
+      "creditHours": 4,
+      "requirements": []
+    },
+    {
+      "semester": 2,
+      "id": "GENn041",
+      "subjectName": "Contemporary Social Issues",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 2,
+      "id": "GENn043",
+      "subjectName": "History of Engineering and Technology",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 2,
+      "id": "MNFn002",
+      "subjectName": "Engineering Graphics-2",
+      "creditHours": 2,
+      "requirements": ["MNFn001"]
+    },
+    {
+      "semester": 2,
+      "id": "MECn002",
+      "subjectName": "Mechanics-2",
+      "creditHours": 2,
+      "requirements": ["MECn001"]
+    },
+    {
+      "semester": 2,
+      "id": "MTHn002",
+      "subjectName": "Mathematics-2",
+      "creditHours": 3,
+      "requirements": ["MTHn001"]
+    },
+    {
+      "semester": 2,
+      "id": "PHYn002",
+      "subjectName": "Physics-2",
+      "creditHours": 3,
+      "requirements": ["PHYn001"]
+    }
+  ],
+  [
+    {
+      "semester": 2,
+      "type": 1,
+      "id": "ARCn060",
+      "subjectName": "Summer Training for level zero",
+      "creditHours": 0,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 3,
+      "id": "ARCn111",
+      "subjectName": "Architectural Construction-1",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 3,
+      "id": "ARCn115",
+      "subjectName": "Propoerties & Resistance of Materials",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 3,
+      "id": "ARCn116",
+      "subjectName": "Surveying",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 3,
+      "id": "ARCn120",
+      "subjectName": "Theories of Architecture-1",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 3,
+      "id": "ARCn121",
+      "subjectName": "Architectural Design-1",
+      "creditHours": 3,
+      "requirements": ["ARCn060"]
+    },
+    {
+      "semester": 3,
+      "id": "ARCn123",
+      "subjectName": "Visual Training-1",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 3,
+      "id": "GENn142",
+      "subjectName": "Technical Report Writing",
+      "creditHours": 2,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 4,
+      "id": "ARCn112",
+      "subjectName": "Architectural Construction-2",
+      "creditHours": 3,
+      "requirements": ["ARCn111"]
+    },
+    {
+      "semester": 4,
+      "id": "ARCn114",
+      "subjectName": "Computer Applications-1",
+      "creditHours": 3,
+      "requirements": ["CMPn010"]
+    },
+    {
+      "semester": 4,
+      "id": "ARCn117",
+      "subjectName": "Theory of Structures",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 4,
+      "id": "ARCn122",
+      "subjectName": "Architectural Design-2",
+      "creditHours": 3,
+      "requirements": ["ARCn121"]
+    },
+    {
+      "semester": 4,
+      "id": "ARCn124",
+      "subjectName": "Skiagraphy perspective",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 4,
+      "id": "ARCn141",
+      "subjectName": "History of Architecture-1",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 4,
+      "id": "MTHn107",
+      "subjectName": "Mathematics-7 (Introduction to Probability and Statistics)",
+      "creditHours": 3,
+      "requirements": ["MTHn002"]
+    }
+  ],
+  [
+    {
+      "semester": 4,
+      "type": 1,
+      "id": "ARCn160",
+      "subjectName": "Summer Training for level one",
+      "creditHours": 0,
+      "requirements": ["ARCn060"]
+    }
+  ],
+  [
+    {
+      "semester": 5,
+      "id": "ARCn210",
+      "subjectName": "Building Technology",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 5,
+      "id": "ARCn211",
+      "subjectName": "Architectural Construction & Building materials-1",
+      "creditHours": 3,
+      "requirements": ["ARCn112"]
+    },
+    {
+      "semester": 5,
+      "id": "ARCn214",
+      "subjectName": "Reinforced concrete & steel structures",
+      "creditHours": 2,
+      "requirements": ["ARCn117"]
+    },
+    {
+      "semester": 5,
+      "id": "ARCn217",
+      "subjectName": "Computer Applications-2",
+      "creditHours": 3,
+      "requirements": ["ARCn114"]
+    },
+    {
+      "semester": 5,
+      "id": "ARCn222",
+      "subjectName": "Architectural Design-3",
+      "creditHours": 3,
+      "requirements": ["ARCn122"]
+    },
+    {
+      "semester": 5,
+      "id": "ARCn227",
+      "subjectName": "Theories of Architecture-2",
+      "creditHours": 2,
+      "requirements": ["ARCn120"]
+    },
+    {
+      "semester": 5,
+      "id": "GENn141b",
+      "subjectName": "Presentation Skills",
+      "creditHours": 2,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 6,
+      "id": "ARCn212",
+      "subjectName": "Architectural Construction & Building materials-2",
+      "creditHours": 3,
+      "requirements": ["ARCn211"]
+    },
+    {
+      "semester": 6,
+      "id": "ARCn215",
+      "subjectName": "Foundation",
+      "creditHours": 2,
+      "requirements": ["ARCn214"]
+    },
+    {
+      "semester": 6,
+      "id": "ARCn216",
+      "subjectName": "Environmental Control",
+      "creditHours": 2,
+      "requirements": ["ARCn210"]
+    },
+    {
+      "semester": 6,
+      "id": "ARCn223",
+      "subjectName": "Architectural Design-4",
+      "creditHours": 3,
+      "requirements": ["ARCn222"]
+    },
+    {
+      "semester": 6,
+      "id": "ARCn225",
+      "subjectName": "Visual Training-2",
+      "creditHours": 2,
+      "requirements": ["ARCn123"]
+    },
+    {
+      "semester": 6,
+      "id": "ARCn241",
+      "subjectName": "History of Architecture-2",
+      "creditHours": 2,
+      "requirements": ["ARCn141"]
+    },
+    {
+      "semester": 6,
+      "id": "GENn341d",
+      "subjectName": "Project Management",
+      "creditHours": 2,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 6,
+      "type": 1,
+      "id": "ARCn260",
+      "subjectName": "Architecture Training -1",
+      "creditHours": 0,
+      "requirements": ["ARCn211", "ARCn160"],
+      "conditions": ["66 Credits"]
+    }
+  ],
+  [
+    {
+      "semester": 7,
+      "id": "ARCn321",
+      "subjectName": "Architectural Design-5",
+      "creditHours": 3,
+      "requirements": ["ARCn223"]
+    },
+    {
+      "semester": 7,
+      "id": "ARCn323",
+      "subjectName": "Housing & City Planning-1",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 7,
+      "id": "ARCn310",
+      "subjectName": "Technical Installations in buildings-1",
+      "creditHours": 2,
+      "requirements": ["ARCn212"]
+    },
+    {
+      "semester": 7,
+      "id": "ARCn325",
+      "subjectName": "Theories of Architecture and Arts",
+      "creditHours": 2,
+      "requirements": ["ARCn227"]
+    },
+    {
+      "semester": 7,
+      "id": "ARCn312",
+      "subjectName": "Working Drawing & Construction Methods-1",
+      "creditHours": 3,
+      "requirements": ["ARCn212"]
+    },
+    {
+      "semester": 7,
+      "id": 123,
+      "optionalSet": ["GENn351d", "GENn352", "GENn353"],
+      "list": [
+        {
+          "semester": 7,
+          "id": "GENn351d",
+          "subjectName": "Technical English",
+          "creditHours": 2,
+          "requirements": ["GENn042"],
+          "optionalSetId": 123
+        },
+        {
+          "semester": 7,
+          "id": "GENn352",
+          "subjectName": "Risk Management",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 123
+        },
+        {
+          "semester": 7,
+          "id": "GENn353",
+          "subjectName": "Industrial Psychology",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 123
+        }
+      ]
+    },
+    {
+      "semester": 7,
+      "id": 124,
+      "optionalSet": ["ARCn334", "ARCn335", "ARCn336"],
+      "list": [
+        {
+          "semester": 7,
+          "id": "ARCn334",
+          "subjectName": "Advanced Studies in Interior Design",
+          "creditHours": 2,
+          "requirements": ["ARCn123"],
+          "optionalSetId": 124
+        },
+        {
+          "semester": 7,
+          "id": "ARCn335",
+          "subjectName": "Landscape Design",
+          "creditHours": 2,
+          "requirements": ["ARCn223"],
+          "optionalSetId": 124
+        },
+        {
+          "semester": 7,
+          "id": "ARCn336",
+          "subjectName": "Simulation Programs & Architecture",
+          "creditHours": 2,
+          "requirements": ["ARCn216", "ARCn217"],
+          "optionalSetId": 124
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "semester": 8,
+      "id": "ARCn322",
+      "subjectName": "Architectural Design-6",
+      "creditHours": 3,
+      "requirements": ["ARCn321"]
+    },
+    {
+      "semester": 8,
+      "id": "ARCn340",
+      "subjectName": "History of Architecture-3",
+      "creditHours": 2,
+      "requirements": ["ARCn241"]
+    },
+    {
+      "semester": 8,
+      "id": "ENGn213b",
+      "subjectName": "Advanced Computer Systems Implementation",
+      "creditHours": 3,
+      "requirements": ["CMPn010"]
+    },
+    {
+      "semester": 8,
+      "id": "ARCn324",
+      "subjectName": "Housing & City Planning-2",
+      "creditHours": 2,
+      "requirements": ["ARCn323"]
+    },
+    {
+      "semester": 8,
+      "id": "ARCn311",
+      "subjectName": "Technical Installations in buildings-2",
+      "creditHours": 2,
+      "requirements": ["ARCn310"]
+    },
+    {
+      "semester": 8,
+      "id": "ARCn313",
+      "subjectName": "Working Drawing & Construction Methods-2",
+      "creditHours": 3,
+      "requirements": ["ARCn312"]
+    },
+    {
+      "semester": 8,
+      "id": 125,
+      "optionalSet": ["ARCn322", "ARCn333", "ARCn331"],
+      "list": [
+        {
+          "semester": 8,
+          "id": "ARCn333",
+          "subjectName": "Building technology and structure systems",
+          "creditHours": 2,
+          "requirements": ["ARCn210"],
+          "optionalSetId": 125
+        },
+        {
+          "semester": 8,
+          "id": "ARCn332",
+          "subjectName": "Design, Environmental planning and power",
+          "creditHours": 2,
+          "requirements": ["ARCn216"],
+          "optionalSetId": 125
+        },
+        {
+          "semester": 8,
+          "id": "ARCn331",
+          "subjectName": "Sustainable Architecture",
+          "creditHours": 2,
+          "requirements": ["ARCn216"],
+          "optionalSetId": 125
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "semester": 8,
+      "type": 1,
+      "id": "ARCn360",
+      "subjectName": "Industrial Training -2",
+      "creditHours": 0,
+      "requirements": ["ARCn260", "ARCn312"],
+      "conditions": ["99 Credits"]
+    }
+  ],
+  [
+    {
+      "semester": 9,
+      "id": "ARCn421",
+      "subjectName": "Architectural Design-7",
+      "creditHours": 3,
+      "requirements": ["ARCn322", "ARCn360"]
+    },
+    {
+      "semester": 9,
+      "id": "ARCn422",
+      "subjectName": "City Planning",
+      "creditHours": 3,
+      "requirements": ["ARCn324"]
+    },
+    {
+      "semester": 9,
+      "id": "ARCn423",
+      "subjectName": "Urban Design",
+      "creditHours": 3,
+      "requirements": ["ARCn324"]
+    },
+    {
+      "semester": 9,
+      "id": "ENGn311b",
+      "subjectName": "Engineering Economy",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 9,
+      "id": "ARCn460",
+      "subjectName": "Graduation Project-A",
+      "creditHours": 1,
+      "requirements": ["ARCn322"],
+      "conditions": ["132 Credits"]
+    },
+    {
+      "semester": 9,
+      "id": 128,
+      "optionalSet": ["ARCn430", "ARCn437", "ARCn436"],
+      "list": [
+        {
+          "semester": 9,
+          "id": "ARCn430",
+          "subjectName": "Aesthetics and Formations",
+          "creditHours": 2,
+          "requirements": ["ARCn340"],
+          "optionalSetId": 128
+        },
+        {
+          "semester": 9,
+          "id": "ARCn437",
+          "subjectName": "Architecture & Human Studies",
+          "creditHours": 2,
+          "requirements": ["ARCn122"],
+          "optionalSetId": 128
+        },
+        {
+          "semester": 9,
+          "id": "ARCn436",
+          "subjectName": "Design Methodology",
+          "creditHours": 2,
+          "requirements": ["ARCn122"],
+          "optionalSetId": 128
+        }
+      ]
+    },
+    {
+      "semester": 9,
+      "id": 127,
+      "optionalSet": ["GENn451b", "GENn452a", "GENn453"],
+      "list": [
+        {
+          "semester": 9,
+          "id": "GENn451",
+          "subjectName": "Environmental Effects of Electromagnetic Waves",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 127
+        },
+        {
+          "semester": 9,
+          "id": "GENn452b",
+          "subjectName": "Civilization and heritage",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 127
+        },
+        {
+          "semester": 9,
+          "id": "GENn453",
+          "subjectName": "Marketing",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 127
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "semester": 10,
+      "id": "ARCn411",
+      "subjectName": "Working Drawing & Construction Documents",
+      "creditHours": 3,
+      "requirements": ["ARCn313"]
+    },
+    {
+      "semester": 10,
+      "id": "ENGn312b",
+      "subjectName": "Engineering Laws and Professional ethics",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 10,
+      "id": "ARCn461",
+      "subjectName": "Graduation Project-B",
+      "creditHours": 4,
+      "requirements": ["ARCn421", "ARCn460"]
+    },
+    {
+      "semester": 10,
+      "id": 129,
+      "optionalSet": ["ARCn431", "ARCn432", "ARCn435"],
+      "list": [
+        {
+          "semester": 10,
+          "id": "ARCn431",
+          "subjectName": "Advanced Building Economics",
+          "creditHours": 2,
+          "requirements": ["ARCn313"],
+          "optionalSetId": 129
+        },
+        {
+          "semester": 10,
+          "id": "ARCn432",
+          "subjectName": "Architecture Criticism",
+          "creditHours": 2,
+          "requirements": ["ARCn340"],
+          "optionalSetId": 129
+        },
+        {
+          "semester": 10,
+          "id": "ARCn435",
+          "subjectName": "Urban & Environmental Conservation",
+          "creditHours": 2,
+          "requirements": ["ARCn324"],
+          "optionalSetId": 129
+        }
+      ]
+    },
+    {
+      "semester": 10,
+      "id": 130,
+      "optionalSet": ["ARCn438", "ARCn433", "ARCn434"],
+      "list": [
+        {
+          "semester": 10,
+          "id": "ARCn438",
+          "subjectName": "Housing in developing countries",
+          "creditHours": 2,
+          "requirements": ["ARCn323"],
+          "optionalSetId": 130
+        },
+        {
+          "semester": 10,
+          "id": "ARCn433",
+          "subjectName": "Modern Building Systems and Materials",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 130
+        },
+        {
+          "semester": 10,
+          "id": "ARCn434",
+          "subjectName": "Urban Renewal",
+          "creditHours": 2,
+          "requirements": ["ARCn323"],
+          "optionalSetId": 130
+        }
+      ]
+    }
+  ]
+]

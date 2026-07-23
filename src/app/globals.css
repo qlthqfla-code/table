@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f8fc;
+  --foreground: #10192b;
+
+  /* Academic navy/blue palette, inspired by Modern Academy's engineering branding. */
+  --color-primary-50: #eef3fc;
+  --color-primary-100: #d7e3f8;
+  --color-primary-200: #b0c7f1;
+  --color-primary-300: #7fa3e6;
+  --color-primary-400: #4d7dd8;
+  --color-primary-500: #2c5ec4;
+  --color-primary-600: #1e46a4;
+  --color-primary-700: #193982;
+  --color-primary-800: #142c63;
+  --color-primary-900: #0f2049;
+  --color-primary-950: #091534;
+
+  --color-accent-500: #17a2b8;
+  --color-accent-600: #128294;
+
+  --color-success-50: #eafaf1;
+  --color-success-500: #1fa262;
+  --color-success-700: #0f7a48;
+
+  --color-danger-50: #fdecec;
+  --color-danger-500: #e0393e;
+  --color-danger-600: #c62328;
+  --color-danger-700: #9c1b1f;
+
+  --color-warning-50: #fff7e6;
+  --color-warning-500: #dc9a11;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-cairo);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-900: var(--color-primary-900);
+  --color-primary-950: var(--color-primary-950);
+
+  --color-accent-500: var(--color-accent-500);
+  --color-accent-600: var(--color-accent-600);
+
+  --color-success-50: var(--color-success-50);
+  --color-success-500: var(--color-success-500);
+  --color-success-700: var(--color-success-700);
+
+  --color-danger-50: var(--color-danger-50);
+  --color-danger-500: var(--color-danger-500);
+  --color-danger-600: var(--color-danger-600);
+  --color-danger-700: var(--color-danger-700);
+
+  --color-warning-50: var(--color-warning-50);
+  --color-warning-500: var(--color-warning-500);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-schedule,
+  #printable-schedule * {
+    visibility: visible;
+  }
+  #printable-schedule {
+    position: absolute;
+    inset: 0;
+    padding: 16px;
+  }
 }

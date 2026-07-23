@@ -1,0 +1,712 @@
+[
+  [
+    {
+      "semester": 1,
+      "id": "CHEN001",
+      "subjectName": "Chemistry",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MNFN003",
+      "subjectName": "Principles of Production Engineering",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "GENN042",
+      "subjectName": "English Language",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MNFN001",
+      "subjectName": "Engineering Graphics-1",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MECN001",
+      "subjectName": "Mechanics-1",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MTHN001",
+      "subjectName": "Mathematics-1 (Algebra and Calculus)",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "PHYN001",
+      "subjectName": "Physics-1",
+      "creditHours": 3,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 2,
+      "id": "CMPN010",
+      "subjectName": "Program Design and Computer Languages",
+      "creditHours": 4,
+      "requirements": []
+    },
+    {
+      "semester": 2,
+      "id": "GENN041",
+      "subjectName": "Contemporary Social Issues",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 2,
+      "id": "GENN043",
+      "subjectName": "History of Engineering and Technology",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 2,
+      "id": "MNFN002",
+      "subjectName": "Engineering Graphics-2",
+      "creditHours": 2,
+      "requirements": ["MNFN001"]
+    },
+    {
+      "semester": 2,
+      "id": "MECN002",
+      "subjectName": "Mechanics-2",
+      "creditHours": 2,
+      "requirements": ["MECN001"]
+    },
+    {
+      "semester": 2,
+      "id": "MTHN002",
+      "subjectName": "Mathematics-2",
+      "creditHours": 3,
+      "requirements": ["MTHN001"]
+    },
+    {
+      "semester": 2,
+      "id": "PHYN002",
+      "subjectName": "Physics-2",
+      "creditHours": 3,
+      "requirements": ["PHYN001"]
+    }
+  ],
+  [
+    {
+      "semester": 2,
+      "type": 1,
+      "id": "CIVN060",
+      "subjectName": "Summer Training for level zero",
+      "creditHours": 0,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 3,
+      "id": "CISN111",
+      "subjectName": "Structural Analysis (1)",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 3,
+      "id": "CISN113",
+      "subjectName": "Properties of material (1)",
+      "creditHours": 3,
+      "requirements": ["MECN002", "PHYN002"]
+    },
+    {
+      "semester": 3,
+      "id": "CIPN111",
+      "subjectName": "Surveying (1)",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 3,
+      "id": "GENN142",
+      "subjectName": "Technical Report Writing",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 3,
+      "id": "CIVN101",
+      "subjectName": "Building Construction",
+      "creditHours": 2,
+      "requirements": ["CIVN060"]
+    },
+    {
+      "semester": 3,
+      "id": "CIVN111",
+      "subjectName": "Civil Engineering Drawing",
+      "creditHours": 2,
+      "requirements": ["MNFN002"]
+    },
+    {
+      "semester": 3,
+      "id": "GENN141",
+      "subjectName": "Presentation Skills",
+      "creditHours": 2,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 4,
+      "id": "CISN112",
+      "subjectName": "Structural Analysis (2)",
+      "creditHours": 3,
+      "requirements": ["CISN111"]
+    },
+    {
+      "semester": 4,
+      "id": "CISN114",
+      "subjectName": "Properties of material (2)",
+      "creditHours": 3,
+      "requirements": ["CISN113"]
+    },
+    {
+      "semester": 4,
+      "id": "CIPN112",
+      "subjectName": "Surveying (2)",
+      "creditHours": 2,
+      "requirements": ["CIPN111"]
+    },
+    {
+      "semester": 4,
+      "id": "GENN341",
+      "subjectName": "Project Management",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 4,
+      "id": "ENGN312",
+      "subjectName": "Engineering Laws and Professional ethics",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 4,
+      "id": "ENGN213",
+      "subjectName": "Advanced Computer Systems Implementation",
+      "creditHours": 3,
+      "requirements": ["CMPN010"]
+    },
+    {
+      "semester": 4,
+      "id": "MTHN103",
+      "subjectName": "Mathematics 3",
+      "creditHours": 3,
+      "requirements": ["MTHN002"]
+    }
+  ],
+  [
+    {
+      "semester": 4,
+      "type": 1,
+      "id": "CIVN160",
+      "subjectName": "Summer Training for level one",
+      "creditHours": 0,
+      "requirements": ["CIVN060"]
+    }
+  ],
+  [
+    {
+      "semester": 5,
+      "id": "CISN211",
+      "subjectName": "Structural Analysis (3)",
+      "creditHours": 3,
+      "requirements": ["CISN112"]
+    },
+    {
+      "semester": 5,
+      "id": "CISN230",
+      "subjectName": "Technical Installations in buildings",
+      "creditHours": 2,
+      "requirements": ["CIVN101"]
+    },
+    {
+      "semester": 5,
+      "id": "CISN212",
+      "subjectName": "Reinforced Concrete (1)",
+      "creditHours": 3,
+      "requirements": ["CISN112", "CISN113"]
+    },
+    {
+      "semester": 5,
+      "id": "MTHN105",
+      "subjectName": "Mathematics 5",
+      "creditHours": 3,
+      "requirements": ["MTHN103"]
+    },
+    {
+      "semester": 5,
+      "id": "MNFN211",
+      "subjectName": "Fluid mechanics",
+      "creditHours": 3,
+      "requirements": ["MTHN002"]
+    },
+    {
+      "semester": 5,
+      "id": "CIPN210",
+      "subjectName": "Soil Mechanics (1)",
+      "creditHours": 2,
+      "requirements": ["CISN112", "CISN113"]
+    }
+  ],
+  [
+    {
+      "semester": 6,
+      "id": "CISN220",
+      "subjectName": "Structural Analysis (4)",
+      "creditHours": 3,
+      "requirements": ["CISN211"]
+    },
+    {
+      "semester": 6,
+      "id": "CISN213",
+      "subjectName": "Reinforced Concrete (2)",
+      "creditHours": 3,
+      "requirements": ["CISN212"]
+    },
+    {
+      "semester": 6,
+      "id": "MTHN107",
+      "subjectName": "Mathematics 7",
+      "creditHours": 3,
+      "requirements": ["MTHN002"]
+    },
+    {
+      "semester": 6,
+      "id": "ENGN311",
+      "subjectName": "Engineering Economy",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 6,
+      "id": "CIPN212",
+      "subjectName": "Soil Mechanics (2)",
+      "creditHours": 2,
+      "requirements": ["CIPN210"]
+    },
+    {
+      "semester": 6,
+      "id": "CISN322",
+      "subjectName": "Steel Structures (1)",
+      "creditHours": 3,
+      "requirements": ["CISN112", "CISN114"]
+    }
+  ],
+  [
+    {
+      "semester": 6,
+      "type": 1,
+      "id": "CISN260",
+      "subjectName": "Industrial Training -1",
+      "creditHours": 0,
+      "requirements": ["CIVN160"]
+    }
+  ],
+  [
+    {
+      "semester": 7,
+      "id": "CIPN211",
+      "subjectName": "Highways & Airports Engineering (1)",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 7,
+      "id": "CISN328",
+      "subjectName": "Sustainability in the Construction Industry",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 7,
+      "id": "CISN325",
+      "subjectName": "Steel Structures (2)",
+      "creditHours": 3,
+      "requirements": ["CISN322"]
+    },
+    {
+      "semester": 7,
+      "id": "CISN323",
+      "subjectName": "Reinforced Concrete (3)",
+      "creditHours": 3,
+      "requirements": ["CISN213"]
+    },
+    {
+      "semester": 7,
+      "id": "CISN326",
+      "subjectName": "Construction Project Management",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 7,
+      "id": 35,
+      "optionalSet": ["GENN351", "GENN352", "GENN353"],
+      "list": [
+        {
+          "semester": 7,
+          "id": "GENN351",
+          "subjectName": "Technical English",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 35
+        },
+        {
+          "semester": 7,
+          "id": "GENN352",
+          "subjectName": "Risk Management",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 35
+        },
+        {
+          "semester": 7,
+          "id": "GENN353",
+          "subjectName": "Industrial Psychology",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 35
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "semester": 8,
+      "id": "CISN324",
+      "subjectName": "Reinforced Concrete (4)",
+      "creditHours": 3,
+      "requirements": ["CISN323"]
+    },
+    {
+      "semester": 8,
+      "id": "CISN329",
+      "subjectName": "Construction Planning and Scheduling",
+      "creditHours": 3,
+      "requirements": ["CISN326", "CISN328"]
+    },
+    {
+      "semester": 8,
+      "id": "CIPN311",
+      "subjectName": "Sanitary Engineering (1)",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 8,
+      "id": "CISN327",
+      "subjectName": "Quantity Surveying and Specifications",
+      "creditHours": 3,
+      "requirements": ["CISN213"]
+    },
+    {
+      "semester": 8,
+      "id": "CIPN310",
+      "subjectName": "Foundations (1)",
+      "creditHours": 3,
+      "requirements": ["CISN212", "CIPN212"]
+    },
+    {
+      "semester": 8,
+      "id": 33,
+      "optionalSet": ["CISN330", "CISN331", "CISN332", "CISN333", "CISN334"],
+      "list": [
+        {
+          "semester": 8,
+          "id": "CISN330",
+          "subjectName": "Structural Dynamics",
+          "creditHours": 3,
+          "requirements": ["CISN220"],
+          "optionalSetId": 33
+        },
+        {
+          "semester": 8,
+          "id": "CISN331",
+          "subjectName": "Advanced Topics in Structural Engineering",
+          "creditHours": 3,
+          "requirements": ["CISN220"],
+          "optionalSetId": 33
+        },
+        {
+          "semester": 8,
+          "id": "CISN332",
+          "subjectName": "Steel Bridges",
+          "creditHours": 3,
+          "requirements": ["CISN325"],
+          "optionalSetId": 33
+        },
+        {
+          "semester": 8,
+          "id": "CISN333",
+          "subjectName": "Inspection and Maintenance of Structures",
+          "creditHours": 3,
+          "requirements": ["CISN114"],
+          "optionalSetId": 33
+        },
+        {
+          "semester": 8,
+          "id": "CISN334",
+          "subjectName": "Feasibility Studies and Project Evaluation",
+          "creditHours": 3,
+          "requirements": ["CISN326"],
+          "optionalSetId": 33
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "semester": 8,
+      "type": 1,
+      "id": "CISN360",
+      "subjectName": "Industrial Training -2",
+      "creditHours": 0,
+      "requirements": ["CISN260"]
+    }
+  ],
+  [
+    {
+      "semester": 9,
+      "id": "CISN421",
+      "subjectName": "Structural Analysis (5)",
+      "creditHours": 3,
+      "requirements": ["CISN220"]
+    },
+    {
+      "semester": 9,
+      "id": "CISN420",
+      "subjectName": "Composite Materials",
+      "creditHours": 2,
+      "requirements": ["CISN114"]
+    },
+    {
+      "semester": 9,
+      "id": "CIPN411",
+      "subjectName": "Foundations (2)",
+      "creditHours": 3,
+      "requirements": ["CIPN310"]
+    },
+    {
+      "semester": 9,
+      "id": 45,
+      "optionalSet": ["GENN451", "GENN452", "GENN453"],
+      "list": [
+        {
+          "semester": 9,
+          "id": "GENN451",
+          "subjectName": "Environmental Effects of Electromagnetic Waves",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 45
+        },
+        {
+          "semester": 9,
+          "id": "GENN452",
+          "subjectName": "Civilization and heritage",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 45
+        },
+        {
+          "semester": 9,
+          "id": "GENN453",
+          "subjectName": "Marketing",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 45
+        }
+      ]
+    },
+    {
+      "semester": 9,
+      "id": 43,
+      "optionalSet": ["CISN430", "CISN431", "CISN432", "CISN433", "CISN434"],
+      "list": [
+        {
+          "semester": 9,
+          "id": "CISN430",
+          "subjectName": "Earthquake Engineering",
+          "creditHours": 3,
+          "requirements": ["CISN330"],
+          "optionalSetId": 43
+        },
+        {
+          "semester": 9,
+          "id": "CISN431",
+          "subjectName": "Structural Analysis by Computer",
+          "creditHours": 3,
+          "requirements": ["CISN331"],
+          "optionalSetId": 43
+        },
+        {
+          "semester": 9,
+          "id": "CISN432",
+          "subjectName": "Special Steel Structures",
+          "creditHours": 3,
+          "requirements": ["CISN332"],
+          "optionalSetId": 43
+        },
+        {
+          "semester": 9,
+          "id": "CISN433",
+          "subjectName": "Advanced Topics in Properties and Strength of Materials",
+          "creditHours": 3,
+          "requirements": ["CISN333"],
+          "optionalSetId": 43
+        },
+        {
+          "semester": 9,
+          "id": "CISN434",
+          "subjectName": "Value Engineering",
+          "creditHours": 3,
+          "requirements": ["CISN334"],
+          "optionalSetId": 43
+        }
+      ]
+    },
+    {
+      "semester": 9,
+      "id": 455,
+      "optionalSet": ["CIVN450", "CIVN451", "CIVN452", "CIVN453", "CIVN454"],
+      "list": [
+        {
+          "semester": 9,
+          "id": "CIVN450",
+          "subjectName": " Control on Construction Systems",
+          "creditHours": 2,
+          "requirements": ["CIVN101"],
+          "optionalSetId": 455
+        },
+        {
+          "semester": 9,
+          "id": "CIVN451",
+          "subjectName": "Coast protection Engineering",
+          "creditHours": 2,
+          "requirements": ["CISN111"],
+          "optionalSetId": 455
+        },
+        {
+          "semester": 9,
+          "id": "CIVN452",
+          "subjectName": "Structural Risk Analysis",
+          "creditHours": 2,
+          "requirements": ["MTHN107"],
+          "optionalSetId": 455
+        },
+        {
+          "semester": 9,
+          "id": "CIVN453",
+          "subjectName": "Infrastructure Engineering",
+          "creditHours": 2,
+          "requirements": ["CIVN101"],
+          "optionalSetId": 455
+        },
+        {
+          "semester": 9,
+          "id": "CIVN454",
+          "subjectName": "Human Resources Management",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 455
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "semester": 10,
+      "id": "CISN423",
+      "subjectName": "Information Technology in Construction",
+      "creditHours": 3,
+      "requirements": ["CISN326"]
+    },
+    {
+      "semester": 10,
+      "id": "CISN422",
+      "subjectName": "Reinforced Concrete (5)",
+      "creditHours": 3,
+      "requirements": ["CISN324"]
+    },
+    {
+      "semester": 10,
+      "id": "CISN410",
+      "subjectName": "Earth Retaining Structures",
+      "creditHours": 3,
+      "requirements": ["CIPN411"]
+    },
+    {
+      "semester": 10,
+      "id": "CISN461",
+      "subjectName": "Graduation Project",
+      "creditHours": 4,
+      "requirements": [],
+      "conditions": ["132 CREDIT"]
+    },
+    {
+      "semester": 10,
+      "id": 456,
+      "optionalSet": ["CIVN450", "CIVN451", "CIVN452", "CIVN453", "CIVN454"],
+      "list": [
+        {
+          "semester": 10,
+          "id": "CIVN450",
+          "subjectName": " Control on Construction Systems",
+          "creditHours": 2,
+          "requirements": ["CIVN101"],
+          "optionalSetId": 456
+        },
+        {
+          "semester": 10,
+          "id": "CIVN451",
+          "subjectName": "Coast protection Engineering",
+          "creditHours": 2,
+          "requirements": ["CISN111"],
+          "optionalSetId": 456
+        },
+        {
+          "semester": 10,
+          "id": "CIVN452",
+          "subjectName": "Structural Risk Analysis",
+          "creditHours": 2,
+          "requirements": ["MTHN107"],
+          "optionalSetId": 456
+        },
+        {
+          "semester": 10,
+          "id": "CIVN453",
+          "subjectName": "Infrastructure Engineering",
+          "creditHours": 2,
+          "requirements": ["CIVN101"],
+          "optionalSetId": 456
+        },
+        {
+          "semester": 10,
+          "id": "CIVN454",
+          "subjectName": "Human Resources Management",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 456
+        }
+      ]
+    }
+  ]
+]

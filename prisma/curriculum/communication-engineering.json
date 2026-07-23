@@ -1,0 +1,602 @@
+[
+  [
+    {
+      "semester": 1,
+      "id": "CHEn001",
+      "subjectName": "Chemistry",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MNFn003",
+      "subjectName": "Principles of Production Engineering",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "GENn042",
+      "subjectName": "English Language",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MNFn001",
+      "subjectName": "Engineering Graphics-1",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MECn001",
+      "subjectName": "Mechanics-1",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "MTHn001",
+      "subjectName": "Mathematics-1 (Algebra and Calculus)",
+      "creditHours": 3,
+      "requirements": []
+    },
+    {
+      "semester": 1,
+      "id": "PHYn001",
+      "subjectName": "Physics-1",
+      "creditHours": 3,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 2,
+      "id": "CMPn010",
+      "subjectName": "Program Design and Computer Languages",
+      "creditHours": 4,
+      "requirements": []
+    },
+    {
+      "semester": 2,
+      "id": "GENn041",
+      "subjectName": "Contemporary Social Issues",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 2,
+      "id": "GENn043",
+      "subjectName": "History of Engineering and Technology",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 2,
+      "id": "MNFn002",
+      "subjectName": "Engineering Graphics-2",
+      "creditHours": 2,
+      "requirements": ["MNFn001"]
+    },
+    {
+      "semester": 2,
+      "id": "MECn002",
+      "subjectName": "Mechanics-2",
+      "creditHours": 2,
+      "requirements": ["MECn001"]
+    },
+    {
+      "semester": 2,
+      "id": "MTHn002",
+      "subjectName": "Mathematics-2",
+      "creditHours": 3,
+      "requirements": ["MTHn001"]
+    },
+    {
+      "semester": 2,
+      "id": "PHYn002",
+      "subjectName": "Physics-2",
+      "creditHours": 3,
+      "requirements": ["PHYn001"]
+    }
+  ],
+  [
+    {
+      "semester": 2,
+      "type": 1,
+      "id": "ELCn060",
+      "subjectName": "Summer Training for level zero",
+      "creditHours": 0,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 3,
+      "id": "ELCn111",
+      "subjectName": "Electrical Circuit Analysis-1",
+      "creditHours": 3,
+      "requirements": ["ELCn060", "MTHn002"]
+    },
+    {
+      "semester": 3,
+      "id": "MTHn103",
+      "subjectName": "Mathematics-3 (Differential Equations and Transforms) ",
+      "creditHours": 3,
+      "requirements": ["MTHn002"]
+    },
+    {
+      "semester": 3,
+      "id": "ELCn114",
+      "subjectName": "Modern Theory of Solids",
+      "creditHours": 2,
+      "requirements": ["PHYn002"]
+    },
+    {
+      "semester": 3,
+      "id": "CMPn111",
+      "subjectName": "Logic Circuits Design-1",
+      "creditHours": 4,
+      "requirements": ["MTHn001"]
+    },
+    {
+      "semester": 3,
+      "id": "GENn141a",
+      "subjectName": "Presentation Skills",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 3,
+      "id": "GENn352",
+      "subjectName": "Risk Management",
+      "creditHours": 2,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 4,
+      "id": "ELCn112",
+      "subjectName": "Electrical Circuit Analysis-2",
+      "creditHours": 3,
+      "requirements": ["ELCn111"]
+    },
+    {
+      "semester": 4,
+      "id": "ELCn113",
+      "subjectName": "Electrical Measurements",
+      "creditHours": 3,
+      "requirements": ["ELCn111"]
+    },
+    {
+      "semester": 4,
+      "id": "CMPn110",
+      "subjectName": "Data Structures and Algorithms",
+      "creditHours": 3,
+      "requirements": ["CMPn010"]
+    },
+    {
+      "semester": 4,
+      "id": "ELCn211",
+      "subjectName": "Signal Analysis",
+      "creditHours": 3,
+      "requirements": ["MTHn103"]
+    },
+    {
+      "semester": 4,
+      "id": "ELCn115",
+      "subjectName": "Semiconductors for Microelectronics",
+      "creditHours": 2,
+      "requirements": ["ELCn114"]
+    },
+    {
+      "semester": 4,
+      "id": "MTHn104",
+      "subjectName": "Mathematics-4 (Advanced Calculus)",
+      "creditHours": 3,
+      "requirements": ["MTHn001"]
+    }
+  ],
+  [
+    {
+      "semester": 4,
+      "type": 1,
+      "id": "ELCn160",
+      "subjectName": "Summer Training for level one",
+      "creditHours": 0,
+      "requirements": ["ELCn060"]
+    }
+  ],
+  [
+    {
+      "semester": 5,
+      "id": "ELCn210",
+      "subjectName": "Control-1 (Principles of Automatic Control)",
+      "creditHours": 3,
+      "requirements": ["MTHn103"]
+    },
+    {
+      "semester": 5,
+      "id": "ELCn212",
+      "subjectName": "Microelectronic Circuits-1",
+      "creditHours": 3,
+      "requirements": ["ELCn115", "ELCn160"]
+    },
+    {
+      "semester": 5,
+      "id": "ELCn214",
+      "subjectName": "Electronic Measurements",
+      "creditHours": 3,
+      "requirements": ["ELCn113"]
+    },
+    {
+      "semester": 5,
+      "id": "CMPn210",
+      "subjectName": "Engineering Computer Applications",
+      "creditHours": 3,
+      "requirements": ["CMPn010"]
+    },
+    {
+      "semester": 5,
+      "id": "MTHn107",
+      "subjectName": "Mathematics-7 (Introduction to Probability and Statistics)",
+      "creditHours": 3,
+      "requirements": ["MTHn002"]
+    },
+    {
+      "semester": 5,
+      "id": "GENn341a",
+      "subjectName": "Project Management",
+      "creditHours": 2,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 6,
+      "id": "ELCn218",
+      "subjectName": "Electrical Power Engineering",
+      "creditHours": 3,
+      "requirements": ["ELCn112"]
+    },
+    {
+      "semester": 6,
+      "id": "ELCn215",
+      "subjectName": "Communications-1",
+      "creditHours": 3,
+      "requirements": ["ELCn211"]
+    },
+    {
+      "semester": 6,
+      "id": "ELCn213",
+      "subjectName": "Microelectronic Circuit-2",
+      "creditHours": 3,
+      "requirements": ["ELCn212"]
+    },
+    {
+      "semester": 6,
+      "id": "MTHn208",
+      "subjectName": "Mathematics-8 (Complex Analysis and P. D, E)",
+      "creditHours": 2,
+      "requirements": ["MTHn002"]
+    },
+    {
+      "semester": 6,
+      "id": "CMPn261",
+      "subjectName": "Seminar",
+      "creditHours": 1,
+      "requirements": [],
+      "conditions": ["66 Credits"]
+    },
+    {
+      "semester": 6,
+      "id": "ENGn213c",
+      "subjectName": "Advanced Computer Systems Implementation",
+      "creditHours": 3,
+      "requirements": ["CMPn010"]
+    },
+    {
+      "semester": 6,
+      "id": "GENn142a",
+      "subjectName": "Technical Report Writing",
+      "creditHours": 2,
+      "requirements": []
+    }
+  ],
+  [
+    {
+      "semester": 6,
+      "type": 1,
+      "id": "ELCn260",
+      "subjectName": "Industrial Training -1",
+      "creditHours": 0,
+      "requirements": ["ELCn160"]
+    }
+  ],
+  [
+    {
+      "semester": 7,
+      "id": "ELCn321",
+      "subjectName": "Communications-2.",
+      "creditHours": 4,
+      "requirements": ["ELCn215"]
+    },
+    {
+      "semester": 7,
+      "id": "ELCn323",
+      "subjectName": "Electromagnetic Field Theory",
+      "creditHours": 3,
+      "requirements": ["PHYn002"]
+    },
+    {
+      "semester": 7,
+      "id": "ELCn361",
+      "subjectName": "Project-1",
+      "creditHours": 2,
+      "requirements": ["ELCn213"],
+      "conditions": ["101 Credits"]
+    },
+    {
+      "semester": 7,
+      "id": "CMPn310",
+      "subjectName": "Microprocessor Based Systems.",
+      "creditHours": 3,
+      "requirements": ["CMPn111"]
+    },
+    {
+      "semester": 7,
+      "id": "ENGn312e",
+      "subjectName": "Engineering Laws and Professional Ethics",
+      "creditHours": 2,
+      "requirements": []
+    },
+    {
+      "semester": 7,
+      "id": 123,
+      "optionalSet": ["GENn351b", "ENGn311", "GENn353"],
+      "list": [
+        {
+          "semester": 7,
+          "id": "GENn351b",
+          "subjectName": "Technical English",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 123
+        },
+        {
+          "semester": 7,
+          "id": "ENGn311a",
+          "optionalSetId": 123,
+          "subjectName": "Engineering Economy",
+          "creditHours": 2,
+          "requirements": []
+        },
+        {
+          "semester": 7,
+          "id": "GENn353",
+          "subjectName": "Industrial Psychology",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 123
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "semester": 8,
+      "id": "ELCn320",
+      "subjectName": "Control-2 (Digital and PLC Control)",
+      "creditHours": 4,
+      "requirements": ["ELCn210"]
+    },
+    {
+      "semester": 8,
+      "id": "ELCn324",
+      "subjectName": "Microwave Engineering.",
+      "creditHours": 4,
+      "requirements": ["ELCn323"]
+    },
+    {
+      "semester": 8,
+      "id": 124,
+      "optionalSet": ["ELCn331", "ELCn332"],
+      "list": [
+        {
+          "semester": 8,
+          "id": "ELCn331",
+          "subjectName": "Very Large Scale Integrated Systems",
+          "creditHours": 3,
+          "requirements": ["ELCn213"],
+          "optionalSetId": 124
+        },
+        {
+          "semester": 8,
+          "id": "ELCn332",
+          "subjectName": "VHDL",
+          "creditHours": 3,
+          "requirements": ["ELCn213"],
+          "optionalSetId": 124
+        }
+      ]
+    },
+    {
+      "semester": 8,
+      "id": 125,
+      "optionalSet": ["ELCn333", "ELCn334", "CMPn321"],
+      "list": [
+        {
+          "semester": 8,
+          "id": "ELCn333",
+          "subjectName": "Radar Systems and Remote Sensing",
+          "creditHours": 3,
+          "requirements": ["ELCn211"],
+          "optionalSetId": 125
+        },
+        {
+          "semester": 8,
+          "id": "ELCn334",
+          "subjectName": "Advanced Topics in Communications",
+          "creditHours": 3,
+          "requirements": ["ELCn321"],
+          "optionalSetId": 125
+        },
+        {
+          "semester": 8,
+          "id": "CMPn321",
+          "subjectName": "Computer Architecture",
+          "creditHours": 3,
+          "requirements": ["CMPn111"],
+          "optionalSetId": 125
+        }
+      ]
+    },
+    {
+      "semester": 8,
+      "id": 126,
+      "optionalSet": ["GENn451b", "GENn452a", "GENn453"],
+      "list": [
+        {
+          "semester": 8,
+          "id": "GENn451e",
+          "subjectName": "Environmental Effects of Electromagnetic Waves",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 126
+        },
+        {
+          "semester": 8,
+          "id": "GENn452a",
+          "subjectName": "Civilization and heritage",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 126
+        },
+        {
+          "semester": 8,
+          "id": "GENn453e",
+          "subjectName": "Marketing",
+          "creditHours": 2,
+          "requirements": [],
+          "optionalSetId": 126
+        }
+      ]
+    }
+  ],
+  [
+    {
+      "semester": 8,
+      "type": 1,
+      "id": "ELCn360",
+      "subjectName": "Industrial Training -2",
+      "creditHours": 0,
+      "requirements": ["ELCn260"],
+      "conditions": ["99 Credits"]
+    }
+  ],
+  [
+    {
+      "semester": 9,
+      "id": "ELCn425",
+      "subjectName": "Digital Signal Processing",
+      "creditHours": 3,
+      "requirements": ["MTHn103", "CMPn111"]
+    },
+    {
+      "semester": 9,
+      "id": "ELCn422",
+      "subjectName": "Communications-3 (Inf. Theory and Coding)",
+      "creditHours": 4,
+      "requirements": ["MTHn107"]
+    },
+    {
+      "semester": 9,
+      "id": "ELCn424",
+      "subjectName": "Radio and Television Engineering Systems.",
+      "creditHours": 4,
+      "requirements": ["ELCn211"]
+    },
+    {
+      "semester": 9,
+      "id": 127,
+      "optionalSet": ["ELCn431", "ELCn432"],
+      "list": [
+        {
+          "semester": 9,
+          "id": "ELCn431",
+          "subjectName": "Optical Fiber Communications",
+          "creditHours": 3,
+          "requirements": ["ELCn324"],
+          "optionalSetId": 127
+        },
+        {
+          "semester": 9,
+          "id": "ELCn432",
+          "subjectName": "Microwave Circuits and Devices",
+          "creditHours": 3,
+          "requirements": ["ELCn324"],
+          "optionalSetId": 127
+        }
+      ]
+    },
+    {
+      "semester": 9,
+      "id": "ELCn460",
+      "subjectName": "Project-2 a",
+      "creditHours": 2,
+      "requirements": ["ELCn361", "ELCn360"],
+      "conditions": [
+        "GPA > 2: 120 Credits/ 123 Credits",
+        "GPA < 2: 128 Credits/ 131 Credits"
+      ]
+    }
+  ],
+  [
+    {
+      "semester": 10,
+      "id": "ELCn421",
+      "subjectName": "Antennas and Wave Propagation.",
+      "creditHours": 4,
+      "requirements": ["ELCn323"]
+    },
+    {
+      "semester": 10,
+      "id": "ELCn423",
+      "subjectName": "Communications-4 (Advanced Communications Systems)",
+      "creditHours": 4,
+      "requirements": ["ELCn321"]
+    },
+    {
+      "semester": 10,
+      "id": 128,
+      "optionalSet": ["ELCn433", "ELCn434"],
+      "list": [
+        {
+          "semester": 10,
+          "id": "ELCn433",
+          "subjectName": "Communication Networks",
+          "creditHours": 3,
+          "requirements": ["ELCn321"],
+          "optionalSetId": 128
+        },
+        {
+          "semester": 10,
+          "id": "ELCn434",
+          "subjectName": "Mobile Communications",
+          "creditHours": 3,
+          "requirements": ["ELCn321"],
+          "optionalSetId": 128
+        }
+      ]
+    },
+    {
+      "semester": 10,
+      "id": "ELCn461",
+      "subjectName": "Project-2 b(Second Stage)",
+      "creditHours": 3,
+      "requirements": ["ELCn460"]
+    }
+  ]
+]
