@@ -19,10 +19,14 @@ function toDTO(course: {
   prerequisites: string[];
   section: string | null;
   instructor: string | null;
-  room: string | null;
-  day: string;
-  startTime: string;
-  endTime: string;
+  lectureDay: string;
+  lectureStartTime: string;
+  lectureEndTime: string;
+  lectureRoom: string | null;
+  sectionDay: string;
+  sectionStartTime: string;
+  sectionEndTime: string;
+  sectionRoom: string | null;
 }): CourseDTO {
   return course;
 }

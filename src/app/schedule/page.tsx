@@ -24,7 +24,7 @@ export default async function SchedulePage() {
   const [courses, existingSchedule, subjects] = await Promise.all([
     prisma.course.findMany({
       where: { department: student.department },
-      orderBy: [{ courseName: "asc" }, { startTime: "asc" }],
+      orderBy: [{ courseName: "asc" }, { lectureStartTime: "asc" }],
     }),
     prisma.studentSchedule.findFirst({
       where: { studentId: session!.id },

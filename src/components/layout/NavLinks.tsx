@@ -47,7 +47,7 @@ export function NavLinks({
       <NavLink
         href="/student/register"
         onClick={onNavigate}
-        className="!text-white rounded-lg bg-primary-600 px-4 py-2 hover:!text-white hover:bg-primary-700"
+        className="!bg-primary-600 !px-4 !py-2 !text-white shadow-sm transition-colors hover:!bg-primary-700 hover:!text-white"
       >
         إنشاء حساب
       </NavLink>

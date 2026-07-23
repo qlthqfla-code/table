@@ -22,8 +22,11 @@ export function NavLink({
     <Link
       href={href}
       onClick={onClick}
-      className={`text-sm font-medium transition-colors ${
-        active ? "text-primary-900 font-semibold" : "text-primary-700 hover:text-primary-900"
+      aria-current={active ? "page" : undefined}
+      className={`relative rounded-lg px-3 py-1.5 text-sm font-medium transition-colors duration-150 ${
+        active
+          ? "bg-primary-50 font-semibold text-primary-900"
+          : "text-primary-700 hover:bg-primary-50/60 hover:text-primary-900"
       } ${className}`}
     >
       {children}

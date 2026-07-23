@@ -1,10 +1,24 @@
-import type { AlternativeSuggestion, ConflictDetail, CourseDTO } from "@/types/course";
+import { courseBlocks, type AlternativeSuggestion, type ConflictDetail, type CourseDTO } from "@/types/course";
 import { timesOverlap } from "@/lib/time";
 
 /**
- * Compares every pair of selected courses and flags the ones that overlap:
- * same day AND start1 < end2 AND start2 < end1 (see project-prompt.md section 3).
+ * Each course meets twice a week (lecture + "تطبيق"), so two courses conflict
+ * if *any* of their four block combinations land on the same day with
+ * overlapping times. Returns the first colliding block pair, or null.
  */
+function findBlockConflict(courseA: CourseDTO, courseB: CourseDTO) {
+  for (const blockA of courseBlocks(courseA)) {
+    for (const blockB of courseBlocks(courseB)) {
+      if (blockA.day !== blockB.day) continue;
+      if (timesOverlap(blockA.startTime, blockA.endTime, blockB.startTime, blockB.endTime)) {
+        return { blockA, blockB };
+      }
+    }
+  }
+  return null;
+}
+
+/** Compares every pair of selected courses and flags the ones whose lecture or section blocks overlap. */
 export function findConflicts(selected: CourseDTO[]): ConflictDetail[] {
   const conflicts: ConflictDetail[] = [];
 
@@ -12,17 +26,9 @@ export function findConflicts(selected: CourseDTO[]): ConflictDetail[] {
     for (let j = i + 1; j < selected.length; j++) {
       const courseA = selected[i];
       const courseB = selected[j];
-
-      if (courseA.day !== courseB.day) continue;
-      if (
-        timesOverlap(
-          courseA.startTime,
-          courseA.endTime,
-          courseB.startTime,
-          courseB.endTime
-        )
-      ) {
-        conflicts.push({ courseA, courseB });
+      const hit = findBlockConflict(courseA, courseB);
+      if (hit) {
+        conflicts.push({ courseA, courseB, blockA: hit.blockA, blockB: hit.blockB });
       }
     }
   }
@@ -59,16 +65,7 @@ export function findAlternatives(
     );
 
     for (const candidate of candidates) {
-      const wouldConflict = others.some(
-        (other) =>
-          other.day === candidate.day &&
-          timesOverlap(
-            other.startTime,
-            other.endTime,
-            candidate.startTime,
-            candidate.endTime
-          )
-      );
+      const wouldConflict = others.some((other) => findBlockConflict(other, candidate) !== null);
       if (!wouldConflict) {
         suggestions.push({ replaces, alternative: candidate });
       }

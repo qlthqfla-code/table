@@ -33,7 +33,13 @@ export function ScheduleBuilder({
   gpa: number;
 }) {
   const maxCreditHours = maxCreditHoursForGpa(gpa);
-  const completedSet = new Set(completedCourseCodes);
+  const completedSet = useMemo(() => new Set(completedCourseCodes), [completedCourseCodes]);
+  // A course the student already passed has nothing to register — drop it
+  // from both pickers entirely instead of just leaving it selectable.
+  const selectableCourses = useMemo(
+    () => allCourses.filter((c) => !completedSet.has(c.courseCode)),
+    [allCourses, completedSet]
+  );
   const courseCodeById = useMemo(() => {
     const map = new Map<string, string>();
     for (const course of allCourses) map.set(course.id, course.courseCode);
@@ -221,7 +227,7 @@ export function ScheduleBuilder({
 
       {showFullTable && (
         <FullCatalogTable
-          allCourses={allCourses}
+          allCourses={selectableCourses}
           completedCourseCodes={completedSet}
           selectedCourseIds={selectedCourseIds}
           onSelect={handleTableSelect}
@@ -241,7 +247,7 @@ export function ScheduleBuilder({
             <div key={row.rowId} className="flex items-start gap-2">
               <div className="flex-1">
                 <CourseAutocomplete
-                  allCourses={allCourses}
+                  allCourses={selectableCourses}
                   value={row.courseId}
                   onChange={(courseId) => setRowCourse(row.rowId, courseId)}
                   completedCourseCodes={completedSet}

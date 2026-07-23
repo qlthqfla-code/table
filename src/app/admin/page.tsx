@@ -7,7 +7,7 @@ import { semesterToYear } from "@/lib/curriculum";
 
 export default async function AdminDashboardPage() {
   const [courses, distinctCourses, totalStudents, subjects] = await Promise.all([
-    prisma.course.findMany({ orderBy: [{ courseName: "asc" }, { startTime: "asc" }] }),
+    prisma.course.findMany({ orderBy: [{ courseName: "asc" }, { lectureStartTime: "asc" }] }),
     prisma.course.findMany({ distinct: ["courseCode"], select: { courseCode: true } }),
     prisma.student.count(),
     prisma.subject.findMany({ select: { department: true, courseCode: true, semester: true } }),
@@ -37,7 +37,7 @@ export default async function AdminDashboardPage() {
       if (nameDiff !== 0) return nameDiff;
       const sectionDiff = Number(a.section) - Number(b.section);
       if (!Number.isNaN(sectionDiff) && sectionDiff !== 0) return sectionDiff;
-      return dayIndex(a.day) - dayIndex(b.day);
+      return dayIndex(a.lectureDay) - dayIndex(b.lectureDay);
     });
 
   return (

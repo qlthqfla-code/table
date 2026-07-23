@@ -80,6 +80,11 @@ model Subject {
 // courseCode can repeat across several rows when a subject has multiple
 // sections with different day/time/instructor/room.
 //
+// Each section meets *twice* a week — a lecture block and a section/tutorial
+// ("تطبيق") block, each at least two periods (90 min) long. Both are fixed
+// once a student registers this section (there's no separate choice of
+// lecture time) — see src/lib/conflicts.ts for how both blocks are checked.
+//
 // `prerequisites` stores the courseCode values a student must have completed
 // before taking this course. Kept on the model now (unused by the conflict
 // checker itself) so the prerequisite-chain feature can be built later
@@ -96,12 +101,19 @@ model Course {
   prerequisites String[]   @default([])
   section       String? // "شعبة/جروب" label, e.g. "A", "1" — optional
   instructor    String?
-  room          String?
-  day           String // e.g. "Sunday" .. "Saturday"
-  startTime     String // 24h "HH:mm", stored as string for simple lexical/relational comparison
-  endTime       String // 24h "HH:mm"
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+
+  lectureDay       String // e.g. "Sunday" .. "Saturday"
+  lectureStartTime String // 24h "HH:mm"
+  lectureEndTime   String // 24h "HH:mm"
+  lectureRoom      String?
+
+  sectionDay       String // the "تطبيق" meeting — day
+  sectionStartTime String // 24h "HH:mm"
+  sectionEndTime   String // 24h "HH:mm"
+  sectionRoom      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   scheduleItems StudentScheduleItem[]
 

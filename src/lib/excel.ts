@@ -1,16 +1,21 @@
 import * as XLSX from "xlsx";
 import { isValidTime } from "@/lib/time";
+import { MIN_BLOCK_MINUTES, blockDurationMinutes } from "@/lib/periods";
 
 export interface ParsedCourseRow {
   courseCode: string;
   courseName: string;
   creditHours: number;
-  section: string | null;
+  section: string | null; // "الشعبة" — the group label, e.g. "1", "A"
   instructor: string | null;
-  room: string | null;
-  day: string;
-  startTime: string;
-  endTime: string;
+  lectureDay: string;
+  lectureStartTime: string;
+  lectureEndTime: string;
+  lectureRoom: string | null;
+  sectionDay: string; // "تطبيق" meeting day
+  sectionStartTime: string;
+  sectionEndTime: string;
+  sectionRoom: string | null;
   prerequisites: string[];
 }
 
@@ -26,7 +31,9 @@ export interface ParseResult {
 
 type RawRow = Record<string, unknown>;
 
-const HEADER_ALIASES: Record<keyof Omit<ParsedCourseRow, "prerequisites">, string[]> = {
+type FieldKey = keyof Omit<ParsedCourseRow, "prerequisites">;
+
+const HEADER_ALIASES: Record<FieldKey, string[]> = {
   courseName: ["اسم المادة", "المادة", "coursename", "course name", "name"],
   courseCode: ["كود المادة", "كود", "coursecode", "course code", "code"],
   creditHours: [
@@ -39,10 +46,14 @@ const HEADER_ALIASES: Record<keyof Omit<ParsedCourseRow, "prerequisites">, strin
   ],
   section: ["الشعبة", "الشعبه", "الجروب", "section", "group"],
   instructor: ["المحاضر", "instructor", "lecturer"],
-  room: ["القاعة", "القاعه", "room"],
-  day: ["اليوم", "day"],
-  startTime: ["وقت البداية", "بداية", "start time", "starttime"],
-  endTime: ["وقت النهاية", "نهاية", "end time", "endtime"],
+  lectureDay: ["يوم المحاضرة", "يوم محاضرة", "lecture day"],
+  lectureStartTime: ["بداية المحاضرة", "من المحاضرة", "lecture start", "lecturestart"],
+  lectureEndTime: ["نهاية المحاضرة", "الى المحاضرة", "lecture end", "lectureend"],
+  lectureRoom: ["قاعة المحاضرة", "lecture room"],
+  sectionDay: ["يوم التطبيق", "يوم السكشن", "section day"],
+  sectionStartTime: ["بداية التطبيق", "من التطبيق", "section start", "sectionstart"],
+  sectionEndTime: ["نهاية التطبيق", "الى التطبيق", "section end", "sectionend"],
+  sectionRoom: ["قاعة التطبيق", "قاعة السكشن", "section room"],
 };
 
 const PREREQ_ALIASES = ["المتطلبات السابقة", "المتطلبات", "prerequisites", "prereq"];
@@ -78,7 +89,7 @@ function normalizeText(value: string): string {
   return value
     .replace(/[٠-٩]/g, (d) => String(d.charCodeAt(0) - 0x0660))
     .replace(/[۰-۹]/g, (d) => String(d.charCodeAt(0) - 0x06f0))
-    .replace(/[ ‏‎]/g, " ")
+    .replace(/[ ‏‎]/g, " ")
     .trim();
 }
 
@@ -205,13 +216,16 @@ export function parseCourseWorkbook(buffer: ArrayBuffer): ParseResult {
 
   const headerMap = resolveHeaderMap(Object.keys(rawRows[0]));
 
-  const requiredFields: (keyof typeof HEADER_ALIASES)[] = [
+  const requiredFields: FieldKey[] = [
     "courseCode",
     "courseName",
     "creditHours",
-    "day",
-    "startTime",
-    "endTime",
+    "lectureDay",
+    "lectureStartTime",
+    "lectureEndTime",
+    "sectionDay",
+    "sectionStartTime",
+    "sectionEndTime",
   ];
   const missingHeaders = requiredFields.filter((f) => !headerMap[f]);
   if (missingHeaders.length > 0) {
@@ -236,25 +250,48 @@ export function parseCourseWorkbook(buffer: ArrayBuffer): ParseResult {
     const courseCode = readText(raw, headerMap.courseCode);
     const courseName = readText(raw, headerMap.courseName);
     const creditHours = parseCreditHours(readCell(raw, headerMap.creditHours));
-    const dayRaw = readText(raw, headerMap.day);
-    const day = normalizeDay(dayRaw);
-    const startTime = normalizeTime(readCell(raw, headerMap.startTime));
-    const endTime = normalizeTime(readCell(raw, headerMap.endTime));
     const section = headerMap.section ? readText(raw, headerMap.section) || null : null;
     const instructor = headerMap.instructor ? readText(raw, headerMap.instructor) || null : null;
-    const room = headerMap.room ? readText(raw, headerMap.room) || null : null;
     const prerequisites = splitPrerequisites(readCell(raw, headerMap.prerequisites));
+
+    const lectureDayRaw = readText(raw, headerMap.lectureDay);
+    const lectureDay = normalizeDay(lectureDayRaw);
+    const lectureStartTime = normalizeTime(readCell(raw, headerMap.lectureStartTime));
+    const lectureEndTime = normalizeTime(readCell(raw, headerMap.lectureEndTime));
+    const lectureRoom = headerMap.lectureRoom ? readText(raw, headerMap.lectureRoom) || null : null;
+
+    const sectionDayRaw = readText(raw, headerMap.sectionDay);
+    const sectionDay = normalizeDay(sectionDayRaw);
+    const sectionStartTime = normalizeTime(readCell(raw, headerMap.sectionStartTime));
+    const sectionEndTime = normalizeTime(readCell(raw, headerMap.sectionEndTime));
+    const sectionRoom = headerMap.sectionRoom ? readText(raw, headerMap.sectionRoom) || null : null;
 
     if (!courseCode) problems.push("كود المادة مفقود");
     if (!courseName) problems.push("اسم المادة مفقود");
     if (!Number.isFinite(creditHours) || creditHours <= 0) {
       problems.push("عدد الساعات غير صحيح");
     }
-    if (!day) problems.push(`اليوم غير معروف: "${dayRaw}"`);
-    if (!startTime) problems.push("وقت البداية غير صحيح (المتوقع HH:mm)");
-    if (!endTime) problems.push("وقت النهاية غير صحيح (المتوقع HH:mm)");
-    if (startTime && endTime && startTime >= endTime) {
-      problems.push("وقت البداية لازم يكون قبل وقت النهاية");
+
+    if (!lectureDay) problems.push(`يوم المحاضرة غير معروف: "${lectureDayRaw}"`);
+    if (!lectureStartTime) problems.push("وقت بداية المحاضرة غير صحيح (المتوقع HH:mm)");
+    if (!lectureEndTime) problems.push("وقت نهاية المحاضرة غير صحيح (المتوقع HH:mm)");
+    if (lectureStartTime && lectureEndTime) {
+      if (lectureStartTime >= lectureEndTime) {
+        problems.push("بداية المحاضرة لازم تكون قبل نهايتها");
+      } else if (blockDurationMinutes(lectureStartTime, lectureEndTime) < MIN_BLOCK_MINUTES) {
+        problems.push(`مدة المحاضرة لازم تكون ${MIN_BLOCK_MINUTES} دقيقة على الأقل (فترتين)`);
+      }
+    }
+
+    if (!sectionDay) problems.push(`يوم التطبيق غير معروف: "${sectionDayRaw}"`);
+    if (!sectionStartTime) problems.push("وقت بداية التطبيق غير صحيح (المتوقع HH:mm)");
+    if (!sectionEndTime) problems.push("وقت نهاية التطبيق غير صحيح (المتوقع HH:mm)");
+    if (sectionStartTime && sectionEndTime) {
+      if (sectionStartTime >= sectionEndTime) {
+        problems.push("بداية التطبيق لازم تكون قبل نهايته");
+      } else if (blockDurationMinutes(sectionStartTime, sectionEndTime) < MIN_BLOCK_MINUTES) {
+        problems.push(`مدة التطبيق لازم تكون ${MIN_BLOCK_MINUTES} دقيقة على الأقل (فترتين)`);
+      }
     }
 
     if (problems.length > 0) {
@@ -268,10 +305,14 @@ export function parseCourseWorkbook(buffer: ArrayBuffer): ParseResult {
       creditHours,
       section,
       instructor,
-      room,
-      day: day as string,
-      startTime: startTime as string,
-      endTime: endTime as string,
+      lectureDay: lectureDay as string,
+      lectureStartTime: lectureStartTime as string,
+      lectureEndTime: lectureEndTime as string,
+      lectureRoom,
+      sectionDay: sectionDay as string,
+      sectionStartTime: sectionStartTime as string,
+      sectionEndTime: sectionEndTime as string,
+      sectionRoom,
       prerequisites,
     });
   });

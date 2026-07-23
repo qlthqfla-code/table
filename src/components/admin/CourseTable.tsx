@@ -10,14 +10,20 @@ export interface AdminCourseRow {
   courseCode: string;
   courseName: string;
   section: string | null;
-  day: string;
-  startTime: string;
-  endTime: string;
-  room: string | null;
   instructor: string | null;
   creditHours: number;
+  lectureDay: string;
+  lectureStartTime: string;
+  lectureEndTime: string;
+  lectureRoom: string | null;
+  sectionDay: string;
+  sectionStartTime: string;
+  sectionEndTime: string;
+  sectionRoom: string | null;
   year: number | null;
 }
+
+const COLUMN_COUNT = 11;
 
 function normalize(value: string) {
   return value.trim().toLowerCase();
@@ -28,6 +34,10 @@ function yearLabel(year: number | null) {
   return `السنة ${YEAR_LABELS_AR[year - 1] ?? year}`;
 }
 
+function dayLabel(day: string) {
+  return DAY_LABELS_AR[day as keyof typeof DAY_LABELS_AR] ?? day;
+}
+
 function CourseRow({ course }: { course: AdminCourseRow }) {
   return (
     <tr className="hover:bg-primary-50/60">
@@ -36,16 +46,19 @@ function CourseRow({ course }: { course: AdminCourseRow }) {
       </td>
       <td className="px-3 py-2 text-primary-800">{course.courseName}</td>
       <td className="px-3 py-2 text-primary-500">{course.section ?? "—"}</td>
+
+      <td className="whitespace-nowrap px-3 py-2 text-primary-500">{dayLabel(course.lectureDay)}</td>
       <td className="whitespace-nowrap px-3 py-2 text-primary-500">
-        {DAY_LABELS_AR[course.day as keyof typeof DAY_LABELS_AR] ?? course.day}
+        {formatTime(course.lectureStartTime)}–{formatTime(course.lectureEndTime)}
       </td>
+      <td className="px-3 py-2 text-primary-500">{course.lectureRoom ?? "—"}</td>
+
+      <td className="whitespace-nowrap px-3 py-2 text-primary-500">{dayLabel(course.sectionDay)}</td>
       <td className="whitespace-nowrap px-3 py-2 text-primary-500">
-        {formatTime(course.startTime)}
+        {formatTime(course.sectionStartTime)}–{formatTime(course.sectionEndTime)}
       </td>
-      <td className="whitespace-nowrap px-3 py-2 text-primary-500">
-        {formatTime(course.endTime)}
-      </td>
-      <td className="px-3 py-2 text-primary-500">{course.room ?? "—"}</td>
+      <td className="px-3 py-2 text-primary-500">{course.sectionRoom ?? "—"}</td>
+
       <td className="px-3 py-2 text-primary-500">{course.instructor ?? "—"}</td>
       <td className="px-3 py-2 text-primary-500">{course.creditHours}</td>
     </tr>
@@ -76,17 +89,29 @@ export function CourseTable({ courses }: { courses: AdminCourseRow[] }) {
   }, [courses]);
 
   const columns = (
-    <tr>
-      <th className="px-3 py-2 font-semibold">كود المادة</th>
-      <th className="px-3 py-2 font-semibold">اسم المادة</th>
-      <th className="px-3 py-2 font-semibold">الشعبة</th>
-      <th className="px-3 py-2 font-semibold">اليوم</th>
-      <th className="px-3 py-2 font-semibold">من</th>
-      <th className="px-3 py-2 font-semibold">إلى</th>
-      <th className="px-3 py-2 font-semibold">القاعة</th>
-      <th className="px-3 py-2 font-semibold">المحاضر</th>
-      <th className="px-3 py-2 font-semibold">الساعات</th>
-    </tr>
+    <>
+      <tr>
+        <th className="px-3 py-1.5 font-semibold" rowSpan={2}>كود المادة</th>
+        <th className="px-3 py-1.5 font-semibold" rowSpan={2}>اسم المادة</th>
+        <th className="px-3 py-1.5 font-semibold" rowSpan={2}>الشعبة</th>
+        <th className="border-r border-primary-600 px-3 py-1 text-center font-semibold" colSpan={3}>
+          المحاضرة
+        </th>
+        <th className="border-r border-primary-600 px-3 py-1 text-center font-semibold" colSpan={3}>
+          التطبيق
+        </th>
+        <th className="px-3 py-1.5 font-semibold" rowSpan={2}>المحاضر</th>
+        <th className="px-3 py-1.5 font-semibold" rowSpan={2}>الساعات</th>
+      </tr>
+      <tr>
+        <th className="border-r border-primary-600 px-3 py-1.5 font-medium">اليوم</th>
+        <th className="px-3 py-1.5 font-medium">الميعاد</th>
+        <th className="px-3 py-1.5 font-medium">القاعة</th>
+        <th className="border-r border-primary-600 px-3 py-1.5 font-medium">اليوم</th>
+        <th className="px-3 py-1.5 font-medium">الميعاد</th>
+        <th className="px-3 py-1.5 font-medium">القاعة</th>
+      </tr>
+    </>
   );
 
   return (
@@ -103,14 +128,14 @@ export function CourseTable({ courses }: { courses: AdminCourseRow[] }) {
       </p>
 
       <div className="max-h-[36rem] overflow-auto rounded-lg border border-primary-100">
-        <table className="w-full min-w-[720px] text-right text-sm">
+        <table className="w-full min-w-[980px] text-right text-sm">
           <thead className="sticky top-0 bg-primary-800 text-white">{columns}</thead>
 
           {filtered ? (
             <tbody className="divide-y divide-primary-50">
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="px-3 py-6 text-center text-primary-400">
+                  <td colSpan={COLUMN_COUNT} className="px-3 py-6 text-center text-primary-400">
                     مفيش نتائج
                   </td>
                 </tr>
@@ -124,8 +149,8 @@ export function CourseTable({ courses }: { courses: AdminCourseRow[] }) {
               <tbody key={year ?? "none"} className="divide-y divide-primary-50">
                 <tr>
                   <td
-                    colSpan={9}
-                    className="sticky top-[37px] bg-primary-100 px-3 py-1.5 text-xs font-bold text-primary-800"
+                    colSpan={COLUMN_COUNT}
+                    className="sticky top-[65px] bg-primary-100 px-3 py-1.5 text-xs font-bold text-primary-800"
                   >
                     {yearLabel(year)} ({yearCourses.length})
                   </td>

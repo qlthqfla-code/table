@@ -72,6 +72,31 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+::selection {
+  background: var(--color-primary-200);
+  color: var(--color-primary-950);
+}
+
+.hero-backdrop {
+  background:
+    radial-gradient(60% 50% at 15% 0%, color-mix(in srgb, var(--color-primary-400) 65%, transparent), transparent),
+    radial-gradient(45% 40% at 100% 10%, color-mix(in srgb, var(--color-accent-500) 28%, transparent), transparent),
+    linear-gradient(color-mix(in srgb, var(--color-primary-900) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-primary-900) 6%, transparent) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    40px 40px,
+    40px 40px;
+  mask-image: radial-gradient(70% 60% at 50% 0%, black, transparent);
+}
+
 @media print {
   body * {
     visibility: hidden;

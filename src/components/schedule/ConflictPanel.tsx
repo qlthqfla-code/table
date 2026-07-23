@@ -1,4 +1,4 @@
-import type { AlternativeSuggestion, ConflictDetail } from "@/types/course";
+import { BLOCK_KIND_LABELS_AR, type AlternativeSuggestion, type ConflictDetail } from "@/types/course";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 import { DAY_LABELS_AR, formatTime } from "@/lib/time";
@@ -28,19 +28,22 @@ export function ConflictPanel({
       <Alert tone="danger">في تعارض بين المواد اللي اخترتها. راجع التفاصيل تحت.</Alert>
 
       <div className="flex flex-col gap-3">
-        {conflicts.map(({ courseA, courseB }, index) => (
+        {conflicts.map(({ courseA, courseB, blockA, blockB }, index) => (
           <div
             key={index}
             className="rounded-xl border-2 border-danger-500 bg-danger-50 p-4"
           >
             <p className="text-sm font-semibold text-danger-700">
-              تعارض في {dayLabel(courseA.day)} — {courseA.courseName} ({courseA.courseCode}) مع{" "}
+              تعارض في {dayLabel(blockA.day)} — {BLOCK_KIND_LABELS_AR[blockA.kind]}{" "}
+              {courseA.courseName} ({courseA.courseCode}) مع {BLOCK_KIND_LABELS_AR[blockB.kind]}{" "}
               {courseB.courseName} ({courseB.courseCode})
             </p>
             <p className="mt-1 text-xs text-danger-600">
-              {courseA.courseName}: {formatTime(courseA.startTime)}–{formatTime(courseA.endTime)}
+              {courseA.courseName} ({BLOCK_KIND_LABELS_AR[blockA.kind]}): {formatTime(blockA.startTime)}–
+              {formatTime(blockA.endTime)}
               {"  ·  "}
-              {courseB.courseName}: {formatTime(courseB.startTime)}–{formatTime(courseB.endTime)}
+              {courseB.courseName} ({BLOCK_KIND_LABELS_AR[blockB.kind]}): {formatTime(blockB.startTime)}–
+              {formatTime(blockB.endTime)}
             </p>
           </div>
         ))}
@@ -61,8 +64,11 @@ export function ConflictPanel({
                     className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-primary-50 px-3 py-2"
                   >
                     <span className="text-xs text-primary-700">
-                      {dayLabel(s.alternative.day)} · {formatTime(s.alternative.startTime)}–
-                      {formatTime(s.alternative.endTime)}
+                      محاضرة: {dayLabel(s.alternative.lectureDay)}{" "}
+                      {formatTime(s.alternative.lectureStartTime)}–{formatTime(s.alternative.lectureEndTime)}
+                      {"  ·  "}
+                      تطبيق: {dayLabel(s.alternative.sectionDay)}{" "}
+                      {formatTime(s.alternative.sectionStartTime)}–{formatTime(s.alternative.sectionEndTime)}
                       {s.alternative.section ? ` · شعبة ${s.alternative.section}` : ""}
                     </span>
                     <Button

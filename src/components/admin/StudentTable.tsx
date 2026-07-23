@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { DEPARTMENT_LABELS_AR, type Department } from "@/lib/curriculum";
 
 export interface AdminStudentRow {
@@ -17,7 +18,11 @@ function normalize(value: string) {
 }
 
 export function StudentTable({ students }: { students: AdminStudentRow[] }) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     const q = normalize(query);
@@ -29,6 +34,24 @@ export function StudentTable({ students }: { students: AdminStudentRow[] }) {
         s.universityId.includes(q)
     );
   }, [students, query]);
+
+  async function handleDelete(id: string) {
+    setDeletingId(id);
+    setError(null);
+    try {
+      const res = await fetch(`/api/admin/students/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error ?? "تعذر حذف الطالب");
+      }
+      setConfirmingId(null);
+      router.refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "تعذر حذف الطالب");
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   return (
     <div className="flex flex-col gap-3">
@@ -43,8 +66,14 @@ export function StudentTable({ students }: { students: AdminStudentRow[] }) {
         {filtered.length} من {students.length} طالب
       </p>
 
+      {error && (
+        <p className="rounded-lg bg-danger-50 px-3 py-2 text-xs font-medium text-danger-600">
+          {error}
+        </p>
+      )}
+
       <div className="max-h-[36rem] overflow-auto rounded-lg border border-primary-100">
-        <table className="w-full min-w-[640px] text-right text-sm">
+        <table className="w-full min-w-[720px] text-right text-sm">
           <thead className="sticky top-0 bg-primary-800 text-white">
             <tr>
               <th className="px-3 py-2 font-semibold">الاسم</th>
@@ -52,12 +81,13 @@ export function StudentTable({ students }: { students: AdminStudentRow[] }) {
               <th className="px-3 py-2 font-semibold">الرقم الجامعي</th>
               <th className="px-3 py-2 font-semibold">القسم</th>
               <th className="px-3 py-2 font-semibold">تاريخ التسجيل</th>
+              <th className="px-3 py-2 font-semibold"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-primary-50">
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-3 py-6 text-center text-primary-400">
+                <td colSpan={6} className="px-3 py-6 text-center text-primary-400">
                   مفيش نتائج
                 </td>
               </tr>
@@ -74,6 +104,36 @@ export function StudentTable({ students }: { students: AdminStudentRow[] }) {
                 </td>
                 <td className="whitespace-nowrap px-3 py-2 text-primary-400">
                   {new Date(student.createdAt).toLocaleDateString("ar-EG")}
+                </td>
+                <td className="whitespace-nowrap px-3 py-2">
+                  {confirmingId === student.id ? (
+                    <div className="flex items-center justify-end gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(student.id)}
+                        disabled={deletingId === student.id}
+                        className="rounded-md bg-danger-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-danger-700 disabled:opacity-60"
+                      >
+                        {deletingId === student.id ? "جاري الحذف..." : "تأكيد الحذف"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setConfirmingId(null)}
+                        disabled={deletingId === student.id}
+                        className="rounded-md border border-primary-200 px-2.5 py-1 text-xs font-medium text-primary-700 hover:bg-primary-50"
+                      >
+                        إلغاء
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setConfirmingId(student.id)}
+                      className="rounded-md px-2.5 py-1 text-xs font-medium text-danger-600 hover:bg-danger-50"
+                    >
+                      حذف
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

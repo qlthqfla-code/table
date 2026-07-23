@@ -9,10 +9,15 @@ function normalize(value: string) {
   return value.trim().toLowerCase();
 }
 
+function dayLabel(day: string) {
+  return DAY_LABELS_AR[day as keyof typeof DAY_LABELS_AR] ?? day;
+}
+
 function courseLabel(course: CourseDTO) {
-  const day = DAY_LABELS_AR[course.day as keyof typeof DAY_LABELS_AR] ?? course.day;
   const sectionLabel = course.section ? ` - شعبة ${course.section}` : "";
-  return `${day} ${formatTime(course.startTime)}–${formatTime(course.endTime)}${sectionLabel}`;
+  const lecture = `محاضرة: ${dayLabel(course.lectureDay)} ${formatTime(course.lectureStartTime)}–${formatTime(course.lectureEndTime)}`;
+  const section = `تطبيق: ${dayLabel(course.sectionDay)} ${formatTime(course.sectionStartTime)}–${formatTime(course.sectionEndTime)}`;
+  return `${lecture} · ${section}${sectionLabel}`;
 }
 
 function Suggestions({

@@ -21,8 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" className={`${cairo.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col">
+    <html
+      lang="ar"
+      dir="rtl"
+      className={`${cairo.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
+    >
+      <body className="relative flex min-h-full flex-col">
+        <div className="hero-backdrop pointer-events-none absolute inset-x-0 top-0 -z-10 h-[620px]" aria-hidden="true" />
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
