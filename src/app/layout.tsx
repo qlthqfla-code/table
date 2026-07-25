@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cairo } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -13,6 +13,16 @@ export const metadata: Metadata = {
   title: "نظام كشف تعارض الجداول الدراسية | الأكاديمية الحديثة",
   description:
     "ابني جدولك الدراسي واكتشف أي تعارض في المواعيد بين المواد قبل التسجيل.",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "جدول الأكاديمية",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#142c63",
 };
 
 export default function RootLayout({
