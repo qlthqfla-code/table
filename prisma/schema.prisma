@@ -53,6 +53,23 @@ model Student {
 }
 
 // ---------------------------------------------------------------------------
+// PasswordResetToken: short-lived "forgot password" tokens. Not tied to a
+// specific Admin/Student relation since either table might own the email —
+// the reset route looks it up the same way login does (admin first, then
+// student). Only the hash is stored, never the raw token.
+// ---------------------------------------------------------------------------
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  email     String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([email])
+}
+
+// ---------------------------------------------------------------------------
 // Subject: the college's full curriculum catalog (which courses exist, which
 // year/semester they belong to, and their real prerequisite chain) — seeded
 // from the reference flowsheet data, independent of what's actually

@@ -1,43 +1,39 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 
-export function LoginForm() {
-  const router = useRouter();
+export function ForgotPasswordForm() {
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    setMessage(null);
     setLoading(true);
 
     const form = new FormData(event.currentTarget);
-    const payload = {
-      email: form.get("email"),
-      password: form.get("password"),
-    };
-
-    const res = await fetch("/api/auth/login", {
+    const res = await fetch("/api/auth/forgot-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ email: form.get("email") }),
     });
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
       setError(data.error ?? "حصل خطأ، حاول تاني");
-      setLoading(false);
-      return;
+    } else {
+      setMessage(data.message);
     }
+    setLoading(false);
+  }
 
-    router.push(data.role === "admin" ? "/admin" : "/schedule");
-    router.refresh();
+  if (message) {
+    return <Alert tone="success">{message}</Alert>;
   }
 
   return (
@@ -45,23 +41,9 @@ export function LoginForm() {
       {error && <Alert tone="danger">{error}</Alert>}
 
       <Input id="email" name="email" type="email" label="الإيميل" required />
-      <Input
-        id="password"
-        name="password"
-        type="password"
-        label="الباسورد"
-        required
-      />
-
-      <Link
-        href="/forgot-password"
-        className="self-end text-xs font-medium text-primary-600 hover:underline"
-      >
-        نسيت الباسورد؟
-      </Link>
 
       <Button type="submit" disabled={loading} className="mt-2 w-full">
-        {loading ? "جاري الدخول..." : "تسجيل الدخول"}
+        {loading ? "جاري الإرسال..." : "ابعت لينك إعادة التعيين"}
       </Button>
     </form>
   );

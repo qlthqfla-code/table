@@ -20,6 +20,15 @@ export const loginSchema = z.object({
   password: z.string().min(1, "الباسورد مطلوب"),
 });
 
+export const forgotPasswordSchema = z.object({
+  email: z.email("الإيميل غير صحيح"),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1, "لينك إعادة التعيين غير صحيح"),
+  password: z.string().min(6, "الباسورد لازم يكون 6 أحرف على الأقل"),
+});
+
 export const completedCoursesSchema = z.object({
   courseCodes: z.array(z.string().min(1)),
 });
