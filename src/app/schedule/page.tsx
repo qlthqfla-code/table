@@ -5,6 +5,7 @@ import { getSession } from "@/lib/auth";
 import { ScheduleBuilder } from "@/components/schedule/ScheduleBuilder";
 import { withCurriculumPrerequisites } from "@/lib/prerequisites";
 import { semesterToYear } from "@/lib/curriculum";
+import { SECTION_CAPACITY } from "@/lib/capacity";
 import type { CourseDTO } from "@/types/course";
 
 export default async function SchedulePage() {
@@ -21,7 +22,7 @@ export default async function SchedulePage() {
     redirect("/student/login");
   }
 
-  const [courses, existingSchedule, subjects] = await Promise.all([
+  const [courses, existingSchedule, subjects, enrollmentCounts] = await Promise.all([
     prisma.course.findMany({
       where: { department: student.department },
       orderBy: [{ courseName: "asc" }, { lectureStartTime: "asc" }],
@@ -35,7 +36,22 @@ export default async function SchedulePage() {
       where: { department: student.department },
       select: { courseCode: true, courseName: true, prerequisites: true, semester: true },
     }),
+    // Other students' seat counts per section — excludes this student's own
+    // pick so a full section never disappears out from under the person
+    // already holding a seat in it.
+    prisma.studentScheduleItem.groupBy({
+      by: ["courseId"],
+      where: {
+        course: { department: student.department },
+        schedule: { studentId: { not: session!.id } },
+      },
+      _count: { _all: true },
+    }),
   ]);
+
+  const fullCourseIds = enrollmentCounts
+    .filter((row) => row._count._all >= SECTION_CAPACITY)
+    .map((row) => row.courseId);
 
   const curriculumPrereqs = new Map(subjects.map((s) => [s.courseCode, s.prerequisites]));
   const yearByCourseCode = new Map(subjects.map((s) => [s.courseCode, semesterToYear(s.semester)]));
@@ -80,6 +96,7 @@ export default async function SchedulePage() {
           completedCourseCodes={student.completedCourseCodes}
           subjectNames={subjects.map((s) => ({ courseCode: s.courseCode, courseName: s.courseName }))}
           gpa={student.gpa}
+          fullCourseIds={fullCourseIds}
         />
       )}
     </div>

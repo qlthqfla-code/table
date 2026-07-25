@@ -9,6 +9,7 @@ import {
   withCurriculumPrerequisites,
 } from "@/lib/prerequisites";
 import { maxCreditHoursForGpa } from "@/lib/creditLimit";
+import { SECTION_CAPACITY } from "@/lib/capacity";
 import type { CourseDTO } from "@/types/course";
 
 function toDTO(course: {
@@ -100,6 +101,39 @@ export async function POST(request: NextRequest) {
       { error: `مينفعش تسجل نفس المادة أكتر من مرة: ${[...duplicateNames].join("، ")}` },
       { status: 400 }
     );
+  }
+
+  // Sections the student already held before this submission never count
+  // against them — otherwise re-saving an unchanged schedule could fail
+  // once other students fill the section past capacity in the meantime.
+  const previouslyHeldItems = await prisma.studentScheduleItem.findMany({
+    where: { schedule: { studentId: session.id } },
+    select: { courseId: true },
+  });
+  const previouslyHeldCourseIds = new Set(previouslyHeldItems.map((i) => i.courseId));
+  const newCourseIds = selectedCourses
+    .map((c) => c.id)
+    .filter((id) => !previouslyHeldCourseIds.has(id));
+
+  if (newCourseIds.length > 0) {
+    const counts = await prisma.studentScheduleItem.groupBy({
+      by: ["courseId"],
+      where: { courseId: { in: newCourseIds }, schedule: { studentId: { not: session.id } } },
+      _count: { _all: true },
+    });
+    const countByCourseId = new Map(counts.map((row) => [row.courseId, row._count._all]));
+    const fullCourses = selectedCourses.filter(
+      (c) => newCourseIds.includes(c.id) && (countByCourseId.get(c.id) ?? 0) >= SECTION_CAPACITY
+    );
+    if (fullCourses.length > 0) {
+      const names = fullCourses
+        .map((c) => `${c.courseName}${c.section ? ` - شعبة ${c.section}` : ""}`)
+        .join("، ");
+      return NextResponse.json(
+        { error: `الشعب دي وصلت للحد الأقصى (${SECTION_CAPACITY} طالب) ومقفولة دلوقتي: ${names}` },
+        { status: 422 }
+      );
+    }
   }
 
   const totalCreditHours = selectedCourses.reduce((sum, c) => sum + c.creditHours, 0);

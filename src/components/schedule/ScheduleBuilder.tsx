@@ -25,20 +25,33 @@ export function ScheduleBuilder({
   completedCourseCodes,
   subjectNames,
   gpa,
+  fullCourseIds,
 }: {
   allCourses: CourseDTO[];
   initialSelected: CourseDTO[];
   completedCourseCodes: string[];
   subjectNames: { courseCode: string; courseName: string }[];
   gpa: number;
+  fullCourseIds: string[];
 }) {
   const maxCreditHours = maxCreditHoursForGpa(gpa);
   const completedSet = useMemo(() => new Set(completedCourseCodes), [completedCourseCodes]);
+  const fullSet = useMemo(() => new Set(fullCourseIds), [fullCourseIds]);
+  const initialSelectedIds = useMemo(
+    () => new Set(initialSelected.map((c) => c.id)),
+    [initialSelected]
+  );
   // A course the student already passed has nothing to register — drop it
-  // from both pickers entirely instead of just leaving it selectable.
+  // from both pickers entirely instead of just leaving it selectable. Same
+  // for a section that's hit capacity, unless the student already holds a
+  // seat in it (initialSelected) — then it stays visible/editable for them.
   const selectableCourses = useMemo(
-    () => allCourses.filter((c) => !completedSet.has(c.courseCode)),
-    [allCourses, completedSet]
+    () =>
+      allCourses.filter(
+        (c) =>
+          !completedSet.has(c.courseCode) && (!fullSet.has(c.id) || initialSelectedIds.has(c.id))
+      ),
+    [allCourses, completedSet, fullSet, initialSelectedIds]
   );
   const courseCodeById = useMemo(() => {
     const map = new Map<string, string>();
