@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Alert } from "@/components/ui/Alert";
 
-export function StudentLoginForm() {
+export function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -22,20 +22,20 @@ export function StudentLoginForm() {
       password: form.get("password"),
     };
 
-    const res = await fetch("/api/auth/student/login", {
+    const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+    const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
       setError(data.error ?? "حصل خطأ، حاول تاني");
       setLoading(false);
       return;
     }
 
-    router.push("/schedule");
+    router.push(data.role === "admin" ? "/admin" : "/schedule");
     router.refresh();
   }
 

@@ -18,9 +18,7 @@ export async function proxy(request: NextRequest) {
   const session = token ? await verifySession(token) : null;
   const isApi = pathname.startsWith("/api/");
 
-  const requiresAdmin =
-    (pathname.startsWith("/admin") && pathname !== "/admin/login") ||
-    pathname.startsWith("/api/admin");
+  const requiresAdmin = pathname.startsWith("/admin") || pathname.startsWith("/api/admin");
   const requiresStudent =
     pathname.startsWith("/schedule") ||
     pathname.startsWith("/onboarding") ||
@@ -31,7 +29,7 @@ export async function proxy(request: NextRequest) {
     if (isApi) {
       return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
     }
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+    return NextResponse.redirect(new URL("/student/login", request.url));
   }
 
   if (requiresStudent && session?.role !== "student") {

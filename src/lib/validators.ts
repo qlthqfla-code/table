@@ -15,12 +15,7 @@ export const studentRegisterSchema = z.object({
   gpa: z.coerce.number().min(0, "الـ GPA لازم يكون 0 أو أكتر").max(4, "الـ GPA من 4 بحد أقصى"),
 });
 
-export const studentLoginSchema = z.object({
-  email: z.email("الإيميل غير صحيح"),
-  password: z.string().min(1, "الباسورد مطلوب"),
-});
-
-export const adminLoginSchema = z.object({
+export const loginSchema = z.object({
   email: z.email("الإيميل غير صحيح"),
   password: z.string().min(1, "الباسورد مطلوب"),
 });

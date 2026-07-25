@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { AuthCard } from "@/components/auth/AuthCard";
-import { StudentLoginForm } from "@/components/auth/StudentLoginForm";
+import { LoginForm } from "@/components/auth/LoginForm";
 
-export default function StudentLoginPage() {
+export default function LoginPage() {
   return (
     <AuthCard
-      title="تسجيل دخول الطلاب"
+      title="تسجيل الدخول"
       footer={
         <span className="text-primary-500">
           لسه معملتش حساب؟{" "}
@@ -15,7 +15,7 @@ export default function StudentLoginPage() {
         </span>
       }
     >
-      <StudentLoginForm />
+      <LoginForm />
     </AuthCard>
   );
 }
