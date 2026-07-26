@@ -7,7 +7,6 @@ export default function LoginPage() {
   return (
     <AuthCard
       title="تسجيل الدخول"
-      subtitle="ادخل بإيميلك وباسوردك — طالب أو أدمن، من نفس المكان."
       icon={<LoginIcon />}
       footer={
         <span className="text-primary-500">

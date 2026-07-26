@@ -41,7 +41,7 @@ function dayLabel(day: string) {
 function CourseRow({ course }: { course: AdminCourseRow }) {
   return (
     <tr className="hover:bg-primary-50/60">
-      <td className="whitespace-nowrap px-3 py-2 font-medium text-primary-900">
+      <td className="sticky right-0 z-10 whitespace-nowrap bg-white px-3 py-2 font-medium text-primary-900 shadow-[-6px_0_6px_-6px_rgba(0,0,0,0.15)]">
         {course.courseCode}
       </td>
       <td className="px-3 py-2 text-primary-800">{course.courseName}</td>
@@ -91,7 +91,9 @@ export function CourseTable({ courses }: { courses: AdminCourseRow[] }) {
   const columns = (
     <>
       <tr>
-        <th className="px-3 py-1.5 font-semibold" rowSpan={2}>كود المادة</th>
+        <th className="sticky right-0 z-20 bg-primary-800 px-3 py-1.5 font-semibold" rowSpan={2}>
+          كود المادة
+        </th>
         <th className="px-3 py-1.5 font-semibold" rowSpan={2}>اسم المادة</th>
         <th className="px-3 py-1.5 font-semibold" rowSpan={2}>الشعبة</th>
         <th className="border-r border-primary-600 px-3 py-1 text-center font-semibold" colSpan={3}>

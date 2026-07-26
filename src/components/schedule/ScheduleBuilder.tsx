@@ -215,10 +215,21 @@ export function ScheduleBuilder({
       {error && <Alert tone="danger">{error}</Alert>}
 
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary-100 bg-primary-50/60 px-4 py-3">
-        <p className="text-sm text-primary-700">
-          الجدول ده هو الجدول اللي رفعه الأدمن: <strong>{distinctCourseCount}</strong> مادة
-          بإجمالي <strong>{allCourses.length}</strong> شعبة.
-        </p>
+        <div className="flex items-center gap-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-100 text-primary-700">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path
+                d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15Z"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+          <p className="text-sm text-primary-700">
+            الجدول ده هو الجدول اللي رفعه الأدمن: <strong>{distinctCourseCount}</strong> مادة
+            بإجمالي <strong>{allCourses.length}</strong> شعبة.
+          </p>
+        </div>
         <Button
           type="button"
           variant="secondary"
@@ -230,16 +241,26 @@ export function ScheduleBuilder({
       </div>
 
       <div
-        className={`flex items-center justify-between rounded-xl border px-4 py-3 text-sm ${
+        className={`flex flex-col gap-2 rounded-xl border px-4 py-3 text-sm ${
           selectedCreditHours > maxCreditHours
             ? "border-danger-500/30 bg-danger-50 text-danger-700"
             : "border-primary-100 bg-white text-primary-700"
         }`}
       >
-        <span>الساعات المختارة حاليًا</span>
-        <span className="font-semibold">
-          {selectedCreditHours} من {maxCreditHours} ساعة (حسب معدلك)
-        </span>
+        <div className="flex items-center justify-between">
+          <span>الساعات المختارة حاليًا</span>
+          <span className="font-semibold tabular-nums">
+            {selectedCreditHours} من {maxCreditHours} ساعة (حسب معدلك)
+          </span>
+        </div>
+        <div className="h-1.5 w-full overflow-hidden rounded-full bg-primary-100">
+          <div
+            className={`h-full rounded-full transition-all duration-300 ${
+              selectedCreditHours > maxCreditHours ? "bg-danger-500" : "bg-primary-600"
+            }`}
+            style={{ width: `${Math.min(100, (selectedCreditHours / maxCreditHours) * 100)}%` }}
+          />
+        </div>
       </div>
 
       {showFullTable && (
