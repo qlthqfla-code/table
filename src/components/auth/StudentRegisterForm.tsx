@@ -51,17 +51,20 @@ export function StudentRegisterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      {error && <Alert tone="danger">{error}</Alert>}
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {error && (
+        <div className="sm:col-span-2">
+          <Alert tone="danger">{error}</Alert>
+        </div>
+      )}
 
-      <Input id="fullName" name="fullName" label="الاسم بالكامل" required />
-      <Input
-        id="email"
-        name="email"
-        type="email"
-        label="الإيميل"
-        required
-      />
+      <div className="sm:col-span-2">
+        <Input id="fullName" name="fullName" label="الاسم بالكامل" required />
+      </div>
+      <div className="sm:col-span-2">
+        <Input id="email" name="email" type="email" label="الإيميل" required />
+      </div>
+
       <Input
         id="universityId"
         name="universityId"
@@ -83,6 +86,7 @@ export function StudentRegisterForm() {
           </option>
         ))}
       </Select>
+
       <Input
         id="gpa"
         name="gpa"
@@ -104,9 +108,11 @@ export function StudentRegisterForm() {
         required
       />
 
-      <Button type="submit" disabled={loading} className="mt-2 w-full">
-        {loading ? "جاري الإنشاء..." : "إنشاء الحساب"}
-      </Button>
+      <div className="sm:col-span-2">
+        <Button type="submit" disabled={loading} className="mt-2 w-full">
+          {loading ? "جاري الإنشاء..." : "إنشاء الحساب"}
+        </Button>
+      </div>
     </form>
   );
 }

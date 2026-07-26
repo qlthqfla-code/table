@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { AuthCard } from "@/components/auth/AuthCard";
 import { StudentRegisterForm } from "@/components/auth/StudentRegisterForm";
+import { RegisterIcon } from "@/components/auth/icons";
 
 export default function StudentRegisterPage() {
   return (
     <AuthCard
       title="إنشاء حساب طالب"
       subtitle="عشان تقدر تبني جدولك الدراسي"
+      icon={<RegisterIcon />}
+      wide
       footer={
         <span className="text-primary-500">
           عندك حساب بالفعل؟{" "}

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DEPARTMENT_LABELS_AR, type Department } from "@/lib/curriculum";
+import { Alert } from "@/components/ui/Alert";
 
 export interface AdminStudentRow {
   id: string;
@@ -66,11 +67,7 @@ export function StudentTable({ students }: { students: AdminStudentRow[] }) {
         {filtered.length} من {students.length} طالب
       </p>
 
-      {error && (
-        <p className="rounded-lg bg-danger-50 px-3 py-2 text-xs font-medium text-danger-600">
-          {error}
-        </p>
-      )}
+      {error && <Alert tone="danger">{error}</Alert>}
 
       <div className="max-h-[36rem] overflow-auto rounded-lg border border-primary-100">
         <table className="w-full min-w-[720px] text-right text-sm">

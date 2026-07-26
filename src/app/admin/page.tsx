@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
+import { StatCard } from "@/components/admin/StatCard";
 import { AdminCoursesByDepartment } from "@/components/admin/AdminCoursesByDepartment";
 import { DAY_ORDER } from "@/lib/time";
 import { semesterToYear } from "@/lib/curriculum";
@@ -49,20 +50,45 @@ export default async function AdminDashboardPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <Card className="text-center">
-          <p className="text-2xl font-bold text-primary-900">{courses.length}</p>
-          <p className="text-xs text-primary-500">شعبة/سكشن (كل الأقسام)</p>
-        </Card>
-        <Card className="text-center">
-          <p className="text-2xl font-bold text-primary-900">{distinctCourses.length}</p>
-          <p className="text-xs text-primary-500">مادة مختلفة (كل الأقسام)</p>
-        </Card>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <StatCard
+          value={courses.length}
+          label="شعبة/سكشن (كل الأقسام)"
+          tone="primary"
+          icon={
+            <path
+              d="M4 6h16M4 12h16M4 18h10"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          }
+        />
+        <StatCard
+          value={distinctCourses.length}
+          label="مادة مختلفة (كل الأقسام)"
+          tone="accent"
+          icon={
+            <path
+              d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15Z"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          }
+        />
         <Link href="/admin/students">
-          <Card className="text-center transition-shadow hover:shadow-md">
-            <p className="text-2xl font-bold text-primary-900">{totalStudents}</p>
-            <p className="text-xs text-primary-500">طالب مسجل — اضغط للعرض</p>
-          </Card>
+          <StatCard
+            value={totalStudents}
+            label="طالب مسجل — اضغط للعرض"
+            tone="success"
+            clickable
+            icon={
+              <path
+                d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            }
+          />
         </Link>
       </div>
 
