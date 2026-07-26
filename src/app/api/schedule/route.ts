@@ -13,6 +13,24 @@ import { maxCreditHoursForGpa } from "@/lib/creditLimit";
 import { SECTION_CAPACITY } from "@/lib/capacity";
 import type { CourseDTO } from "@/types/course";
 
+/**
+ * ═══ شرح للمناقشة: قفل الشعبة لما تمتلئ (وحماية من التزامن) ═══
+ * كل شعبة سقفها 40 طالب (SECTION_CAPACITY). المشكلة الحقيقية مش "إزاي
+ * أعد الطلاب" (ده سهل، مجرد COUNT في قاعدة البيانات) — المشكلة هي: لو
+ * طالبين بعتوا طلب تسجيل في نفس اللحظة بالظبط للمقعد الأخير (رقم 40)،
+ * ممكن الاتنين "يعدّوا" 39 طالب في نفس اللحظة (قبل ما أي حد منهم يتسجل
+ * فعليًا) ويفكروا إن فيه مكان، فيتسجلوا الاتنين ويبقى فيه 41 — ده اسمه
+ * "Race Condition" (حالة تسابق).
+ *
+ * الحل هنا على مرحلتين:
+ * 1) فحص سريع (findFullCourses) بره أي معاملة (transaction) — بس ده مجرد
+ *    تحسين للسرعة (early rejection)، مش الحماية الحقيقية.
+ * 2) الحماية الفعلية: نفس الفحص بيتعاد جوه transaction بمستوى عزل
+ *    "Serializable" (أعلى مستوى حماية في قواعد البيانات) — لو transaction-ين
+ *    حاولوا ياخدوا نفس المقعد الأخير في نفس اللحظة، قاعدة البيانات نفسها
+ *    (PostgreSQL) هتكتشف التعارض وترفض واحد منهم تلقائيًا (P2034)، ونرد
+ *    عليه برسالة "حاول تاني" بدل ما نسيب الشعبة تمتلئ بأكتر من 40.
+ */
 class CapacityError extends Error {}
 
 /** Which of `newCourseIds` are already at SECTION_CAPACITY, counting every

@@ -26,7 +26,19 @@ export const BREAK = { afterPeriod: 4, startTime: "12:00", endTime: "12:30" };
 
 export const MIN_BLOCK_MINUTES = 90; // a lecture/section block must span at least 2 periods
 
-/** Every period whose time range overlaps the given [startTime, endTime) block. */
+/**
+ * ═══ شرح للمناقشة: تحويل الأوقات لشبكة فترات (جدول الحصص) ═══
+ * الجدول النهائي (WeeklyCalendar) شكله فترات (1 لـ8) في صفوف، والأيام في
+ * أعمدة — بالظبط زي الجدول الورقي الحقيقي اللي الأكاديمية بتطبعه. بس
+ * البيانات المخزّنة في قاعدة البيانات هي أوقات عادية ("09:00"–"10:30")
+ * مش أرقام فترات. الدالة دي هي الجسر بين الاتنين: بتاخد بداية ونهاية أي
+ * محاضرة/تطبيق وبترجع كل الفترات (Period) اللي بتتقاطع معاه زمنيًا
+ * (باستخدام نفس timesOverlap اللي بيكشف التعارضات!) — عشان الواجهة تعرف
+ * في أنهي خانة/خانات من الجدول ترسم المادة دي.
+ *
+ * مثال: محاضرة من 10:30–12:00 بتتقاطع مع الفترة 3 (10:30–11:15) والفترة 4
+ * (11:15–12:00)، فبترجع الاتنين، وبتترسم المادة ممتدة على الخانتين.
+ */
 export function periodsForBlock(startTime: string, endTime: string): Period[] {
   return PERIODS.filter((p) => timesOverlap(startTime, endTime, p.startTime, p.endTime));
 }
