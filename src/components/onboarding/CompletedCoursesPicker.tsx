@@ -156,28 +156,33 @@ export function CompletedCoursesPicker({
     setLoading(true);
     setError(null);
 
-    const res = await fetch("/api/student/completed-courses", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courseCodes: [...selected] }),
-    });
+    try {
+      const res = await fetch("/api/student/completed-courses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseCodes: [...selected] }),
+      });
 
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
-      if (res.status === 401) {
-        window.location.href = "/student/login";
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+          window.location.href = "/student/login";
+          return;
+        }
+        setError(data.error ?? "حصل خطأ، حاول تاني");
+        setLoading(false);
         return;
       }
-      setError(data.error ?? "حصل خطأ، حاول تاني");
-      setLoading(false);
-      return;
-    }
 
-    // Hard navigation, not router.push: the Navbar's "جدولي" link to
-    // /schedule may have been prefetched while we were still unonboarded,
-    // and the client router cache can replay that stale redirect even
-    // after this request updates the session cookie.
-    window.location.href = "/schedule";
+      // Hard navigation, not router.push: the Navbar's "جدولي" link to
+      // /schedule may have been prefetched while we were still unonboarded,
+      // and the client router cache can replay that stale redirect even
+      // after this request updates the session cookie.
+      window.location.href = "/schedule";
+    } catch {
+      setError("تعذر الاتصال بالسيرفر، تأكد من الإنترنت وحاول تاني");
+      setLoading(false);
+    }
   }
 
   return (

@@ -17,17 +17,21 @@ export function ForgotPasswordForm() {
     setLoading(true);
 
     const form = new FormData(event.currentTarget);
-    const res = await fetch("/api/auth/forgot-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: form.get("email") }),
-    });
-    const data = await res.json().catch(() => ({}));
+    try {
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.get("email") }),
+      });
+      const data = await res.json().catch(() => ({}));
 
-    if (!res.ok) {
-      setError(data.error ?? "حصل خطأ، حاول تاني");
-    } else {
-      setMessage(data.message);
+      if (!res.ok) {
+        setError(data.error ?? "حصل خطأ، حاول تاني");
+      } else {
+        setMessage(data.message);
+      }
+    } catch {
+      setError("تعذر الاتصال بالسيرفر، تأكد من الإنترنت وحاول تاني");
     }
     setLoading(false);
   }

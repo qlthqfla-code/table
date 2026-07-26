@@ -23,21 +23,26 @@ export function LoginForm() {
       password: form.get("password"),
     };
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json().catch(() => ({}));
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
 
-    if (!res.ok) {
-      setError(data.error ?? "حصل خطأ، حاول تاني");
+      if (!res.ok) {
+        setError(data.error ?? "حصل خطأ، حاول تاني");
+        setLoading(false);
+        return;
+      }
+
+      router.push(data.role === "admin" ? "/admin" : "/schedule");
+      router.refresh();
+    } catch {
+      setError("تعذر الاتصال بالسيرفر، تأكد من الإنترنت وحاول تاني");
       setLoading(false);
-      return;
     }
-
-    router.push(data.role === "admin" ? "/admin" : "/schedule");
-    router.refresh();
   }
 
   return (

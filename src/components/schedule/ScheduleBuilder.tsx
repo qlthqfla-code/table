@@ -113,22 +113,26 @@ export function ScheduleBuilder({
     setLoading(true);
     setError(null);
 
-    const res = await fetch("/api/schedule", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ courseIds }),
-    });
-    const data = await res.json().catch(() => ({}));
+    try {
+      const res = await fetch("/api/schedule", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ courseIds }),
+      });
+      const data = await res.json().catch(() => ({}));
 
-    if (res.ok) {
-      setConfirmedCourses(data.courses);
-      setConflictData(null);
-      setView("confirmed");
-    } else if (res.status === 409 && data.conflicts) {
-      setConflictData({ conflicts: data.conflicts, alternatives: data.alternatives ?? [] });
-      setView("conflict");
-    } else {
-      setError(data.error ?? "حصل خطأ، حاول تاني");
+      if (res.ok) {
+        setConfirmedCourses(data.courses);
+        setConflictData(null);
+        setView("confirmed");
+      } else if (res.status === 409 && data.conflicts) {
+        setConflictData({ conflicts: data.conflicts, alternatives: data.alternatives ?? [] });
+        setView("conflict");
+      } else {
+        setError(data.error ?? "حصل خطأ، حاول تاني");
+      }
+    } catch {
+      setError("تعذر الاتصال بالسيرفر، تأكد من الإنترنت وحاول تاني");
     }
 
     setLoading(false);

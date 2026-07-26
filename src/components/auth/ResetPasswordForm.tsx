@@ -27,21 +27,26 @@ export function ResetPasswordForm() {
     }
 
     setLoading(true);
-    const res = await fetch("/api/auth/reset-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token, password }),
-    });
-    const data = await res.json().catch(() => ({}));
+    try {
+      const res = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, password }),
+      });
+      const data = await res.json().catch(() => ({}));
 
-    if (!res.ok) {
-      setError(data.error ?? "حصل خطأ، حاول تاني");
+      if (!res.ok) {
+        setError(data.error ?? "حصل خطأ، حاول تاني");
+        setLoading(false);
+        return;
+      }
+
+      setDone(true);
       setLoading(false);
-      return;
+    } catch {
+      setError("تعذر الاتصال بالسيرفر، تأكد من الإنترنت وحاول تاني");
+      setLoading(false);
     }
-
-    setDone(true);
-    setLoading(false);
   }
 
   if (!token) {

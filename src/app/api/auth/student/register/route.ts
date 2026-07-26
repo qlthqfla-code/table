@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { Department } from "@prisma/client";
+import { Department, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { createSessionCookie } from "@/lib/auth";
 import { studentRegisterSchema } from "@/lib/validators";
+
+function duplicateAccountError() {
+  return NextResponse.json(
+    { error: "في حساب مسجل بنفس الإيميل أو الرقم الجامعي" },
+    { status: 409 }
+  );
+}
 
 export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null);
@@ -22,23 +29,31 @@ export async function POST(request: NextRequest) {
     where: { OR: [{ email }, { universityId }] },
   });
   if (existing) {
-    return NextResponse.json(
-      { error: "في حساب مسجل بنفس الإيميل أو الرقم الجامعي" },
-      { status: 409 }
-    );
+    return duplicateAccountError();
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  const student = await prisma.student.create({
-    data: {
-      fullName,
-      email,
-      universityId,
-      passwordHash,
-      department: department as Department,
-      gpa,
-    },
-  });
+
+  let student;
+  try {
+    student = await prisma.student.create({
+      data: {
+        fullName,
+        email,
+        universityId,
+        passwordHash,
+        department: department as Department,
+        gpa,
+      },
+    });
+  } catch (err) {
+    // Two concurrent signups can both pass the findFirst check above and
+    // then race on the unique email/universityId constraint at insert time.
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      return duplicateAccountError();
+    }
+    throw err;
+  }
 
   await createSessionCookie({ id: student.id, role: "student", onboarded: false });
 

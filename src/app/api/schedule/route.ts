@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { destroySessionCookie, getSession } from "@/lib/auth";
 import { createScheduleSchema } from "@/lib/validators";
@@ -11,6 +12,35 @@ import {
 import { maxCreditHoursForGpa } from "@/lib/creditLimit";
 import { SECTION_CAPACITY } from "@/lib/capacity";
 import type { CourseDTO } from "@/types/course";
+
+class CapacityError extends Error {}
+
+/** Which of `newCourseIds` are already at SECTION_CAPACITY, counting every
+ * other student's active schedule (never the requesting student's own). */
+async function findFullCourses(
+  client: Prisma.TransactionClient | typeof prisma,
+  newCourseIds: string[],
+  selectedCourses: { id: string; courseName: string; section: string | null }[],
+  studentId: string
+) {
+  if (newCourseIds.length === 0) return [];
+  const counts = await client.studentScheduleItem.groupBy({
+    by: ["courseId"],
+    where: { courseId: { in: newCourseIds }, schedule: { studentId: { not: studentId } } },
+    _count: { _all: true },
+  });
+  const countByCourseId = new Map(counts.map((row) => [row.courseId, row._count._all]));
+  return selectedCourses.filter(
+    (c) => newCourseIds.includes(c.id) && (countByCourseId.get(c.id) ?? 0) >= SECTION_CAPACITY
+  );
+}
+
+function fullCoursesMessage(fullCourses: { courseName: string; section: string | null }[]) {
+  const names = fullCourses
+    .map((c) => `${c.courseName}${c.section ? ` - شعبة ${c.section}` : ""}`)
+    .join("، ");
+  return `الشعب دي وصلت للحد الأقصى (${SECTION_CAPACITY} طالب) ومقفولة دلوقتي: ${names}`;
+}
 
 function toDTO(course: {
   id: string;
@@ -115,25 +145,13 @@ export async function POST(request: NextRequest) {
     .map((c) => c.id)
     .filter((id) => !previouslyHeldCourseIds.has(id));
 
-  if (newCourseIds.length > 0) {
-    const counts = await prisma.studentScheduleItem.groupBy({
-      by: ["courseId"],
-      where: { courseId: { in: newCourseIds }, schedule: { studentId: { not: session.id } } },
-      _count: { _all: true },
-    });
-    const countByCourseId = new Map(counts.map((row) => [row.courseId, row._count._all]));
-    const fullCourses = selectedCourses.filter(
-      (c) => newCourseIds.includes(c.id) && (countByCourseId.get(c.id) ?? 0) >= SECTION_CAPACITY
-    );
-    if (fullCourses.length > 0) {
-      const names = fullCourses
-        .map((c) => `${c.courseName}${c.section ? ` - شعبة ${c.section}` : ""}`)
-        .join("، ");
-      return NextResponse.json(
-        { error: `الشعب دي وصلت للحد الأقصى (${SECTION_CAPACITY} طالب) ومقفولة دلوقتي: ${names}` },
-        { status: 422 }
-      );
-    }
+  // Fast-path rejection so an obviously-full section doesn't make the
+  // student wait through the rest of the validation pipeline below. This
+  // read is outside any transaction, so it's still just an optimistic
+  // check — the authoritative one runs inside the write transaction.
+  const earlyFullCourses = await findFullCourses(prisma, newCourseIds, selectedCourses, session.id);
+  if (earlyFullCourses.length > 0) {
+    return NextResponse.json({ error: fullCoursesMessage(earlyFullCourses) }, { status: 422 });
   }
 
   const totalCreditHours = selectedCourses.reduce((sum, c) => sum + c.creditHours, 0);
@@ -193,20 +211,48 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ conflicts, alternatives }, { status: 409 });
   }
 
-  const schedule = await prisma.$transaction(async (tx) => {
-    await tx.studentSchedule.deleteMany({ where: { studentId: session.id } });
-    return tx.studentSchedule.create({
-      data: {
-        studentId: session.id,
-        items: {
-          create: selectedCourses.map((course) => ({ courseId: course.id })),
-        },
-      },
-      include: { items: { include: { course: true } } },
-    });
-  });
+  try {
+    const schedule = await prisma.$transaction(
+      async (tx) => {
+        // Re-check capacity inside the transaction, right before writing —
+        // this is what actually closes the race window between two
+        // students grabbing the last seat at the same time. Combined with
+        // Serializable isolation, Postgres itself will abort one of two
+        // concurrent transactions that both try to claim the last seat.
+        const fullCourses = await findFullCourses(tx, newCourseIds, selectedCourses, session.id);
+        if (fullCourses.length > 0) {
+          throw new CapacityError(fullCoursesMessage(fullCourses));
+        }
 
-  return NextResponse.json({
-    courses: schedule.items.map((item) => toDTO(item.course)),
-  });
+        await tx.studentSchedule.deleteMany({ where: { studentId: session.id } });
+        return tx.studentSchedule.create({
+          data: {
+            studentId: session.id,
+            items: {
+              create: selectedCourses.map((course) => ({ courseId: course.id })),
+            },
+          },
+          include: { items: { include: { course: true } } },
+        });
+      },
+      { isolationLevel: Prisma.TransactionIsolationLevel.Serializable }
+    );
+
+    return NextResponse.json({
+      courses: schedule.items.map((item) => toDTO(item.course)),
+    });
+  } catch (err) {
+    if (err instanceof CapacityError) {
+      return NextResponse.json({ error: err.message }, { status: 422 });
+    }
+    // Postgres aborts one side of a genuine write conflict under
+    // Serializable isolation — safe to ask the student to just resubmit.
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2034") {
+      return NextResponse.json(
+        { error: "حصل تعارض وقتي وانت بتسجل، حاول تاني" },
+        { status: 409 }
+      );
+    }
+    throw err;
+  }
 }

@@ -21,49 +21,68 @@ export function UploadCoursesForm({ department }: { department: Department }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [confirming, setConfirming] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<UploadResult | null>(null);
   const inputId = `course-file-${department}`;
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function requestUpload(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!inputRef.current?.files?.[0]) {
+      setError("اختار ملف Excel الأول");
+      return;
+    }
+    setError(null);
+    setResult(null);
+    setConfirming(true);
+  }
+
+  async function performUpload() {
     const file = inputRef.current?.files?.[0];
     if (!file) {
+      setConfirming(false);
       setError("اختار ملف Excel الأول");
       return;
     }
 
     setLoading(true);
     setError(null);
-    setResult(null);
 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("department", department);
 
-    const res = await fetch("/api/admin/courses/upload", {
-      method: "POST",
-      body: formData,
-    });
-    const data = await res.json().catch(() => ({}));
+    try {
+      const res = await fetch("/api/admin/courses/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json().catch(() => ({}));
 
-    if (!res.ok) {
-      setError(data.error ?? "حصل خطأ أثناء رفع الملف");
-      if (data.rowErrors) setResult({ added: 0, skipped: data.rowErrors.length, rowErrors: data.rowErrors });
+      if (!res.ok) {
+        setError(data.error ?? "حصل خطأ أثناء رفع الملف");
+        if (data.rowErrors) setResult({ added: 0, skipped: data.rowErrors.length, rowErrors: data.rowErrors });
+        setLoading(false);
+        setConfirming(false);
+        return;
+      }
+
+      setResult(data);
       setLoading(false);
-      return;
+      setConfirming(false);
+      if (inputRef.current) inputRef.current.value = "";
+      setFileName(null);
+      router.refresh();
+    } catch {
+      setError("تعذر الاتصال بالسيرفر، تأكد من الإنترنت وحاول تاني");
+      setLoading(false);
+      setConfirming(false);
     }
-
-    setResult(data);
-    setLoading(false);
-    if (inputRef.current) inputRef.current.value = "";
-    setFileName(null);
-    router.refresh();
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={requestUpload} className="flex flex-col gap-4">
       {error && <Alert tone="danger">{error}</Alert>}
 
       {result && (
@@ -91,13 +110,44 @@ export function UploadCoursesForm({ department }: { department: Department }) {
           type="file"
           accept=".xlsx,.xls"
           className="hidden"
-          onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
+          onChange={(e) => {
+            setFileName(e.target.files?.[0]?.name ?? null);
+            setConfirming(false);
+          }}
         />
       </label>
 
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading ? "جاري الرفع..." : "رفع واستبدال جدول القسم ده"}
-      </Button>
+      {confirming ? (
+        <div className="flex flex-col gap-2 rounded-xl border-2 border-danger-500 bg-danger-50 p-4">
+          <p className="text-sm font-semibold text-danger-700">
+            متأكد؟ ده هيمسح جدول القسم ده الحالي بالكامل ويستبدله بالملف ده — أي شعبة مسجلة عند
+            طلاب دلوقتي هتتشال من جداولهم.
+          </p>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="danger"
+              disabled={loading}
+              className="flex-1"
+              onClick={performUpload}
+            >
+              {loading ? "جاري الرفع..." : "تأكيد الرفع والاستبدال"}
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={loading}
+              onClick={() => setConfirming(false)}
+            >
+              إلغاء
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <Button type="submit" className="w-full">
+          رفع واستبدال جدول القسم ده
+        </Button>
+      )}
 
       {result && result.rowErrors.length > 0 && (
         <div className="mt-2 max-h-72 overflow-y-auto rounded-lg border border-danger-100">

@@ -28,21 +28,26 @@ export function StudentRegisterForm() {
       gpa: form.get("gpa"),
     };
 
-    const res = await fetch("/api/auth/student/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch("/api/auth/student/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
-      setError(data.error ?? "حصل خطأ، حاول تاني");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? "حصل خطأ، حاول تاني");
+        setLoading(false);
+        return;
+      }
+
+      router.push("/schedule");
+      router.refresh();
+    } catch {
+      setError("تعذر الاتصال بالسيرفر، تأكد من الإنترنت وحاول تاني");
       setLoading(false);
-      return;
     }
-
-    router.push("/schedule");
-    router.refresh();
   }
 
   return (

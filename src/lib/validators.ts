@@ -3,9 +3,13 @@ import { DEPARTMENTS } from "@/lib/curriculum";
 
 const departmentValues = DEPARTMENTS.map((d) => d.value) as [string, ...string[]];
 
+// Trimmed + lowercased everywhere an email is read or written, so
+// "Foo@x.com" and "foo@x.com" are always treated as the same account.
+const emailSchema = z.email("الإيميل غير صحيح").trim().toLowerCase();
+
 export const studentRegisterSchema = z.object({
   fullName: z.string().trim().min(2, "الاسم قصير جدًا"),
-  email: z.email("الإيميل غير صحيح"),
+  email: emailSchema,
   universityId: z
     .string()
     .trim()
@@ -16,12 +20,12 @@ export const studentRegisterSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  email: z.email("الإيميل غير صحيح"),
+  email: emailSchema,
   password: z.string().min(1, "الباسورد مطلوب"),
 });
 
 export const forgotPasswordSchema = z.object({
-  email: z.email("الإيميل غير صحيح"),
+  email: emailSchema,
 });
 
 export const resetPasswordSchema = z.object({
