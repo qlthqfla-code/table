@@ -94,7 +94,6 @@ export default async function SchedulePage() {
           allCourses={allCourses}
           initialSelected={initialSelected}
           completedCourseCodes={student.completedCourseCodes}
-          subjectNames={subjects.map((s) => ({ courseCode: s.courseCode, courseName: s.courseName }))}
           gpa={student.gpa}
           fullCourseIds={fullCourseIds}
         />

@@ -23,14 +23,12 @@ export function ScheduleBuilder({
   allCourses,
   initialSelected,
   completedCourseCodes,
-  subjectNames,
   gpa,
   fullCourseIds,
 }: {
   allCourses: CourseDTO[];
   initialSelected: CourseDTO[];
   completedCourseCodes: string[];
-  subjectNames: { courseCode: string; courseName: string }[];
   gpa: number;
   fullCourseIds: string[];
 }) {
@@ -290,7 +288,6 @@ export function ScheduleBuilder({
                   onChange={(courseId) => setRowCourse(row.rowId, courseId)}
                   completedCourseCodes={completedSet}
                   excludedCourseCodes={excludedCourseCodes}
-                  subjectNames={subjectNames}
                 />
               </div>
               <button

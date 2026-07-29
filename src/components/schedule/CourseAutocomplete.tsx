@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import type { CourseDTO } from "@/types/course";
 import { DAY_LABELS_AR, formatTime } from "@/lib/time";
-import { buildCourseNameMap, missingPrerequisites } from "@/lib/prerequisites";
+import { missingPrerequisites } from "@/lib/prerequisites";
 
 function normalize(value: string) {
   return value.trim().toLowerCase();
@@ -24,16 +24,21 @@ function Suggestions({
   courses,
   completedCourseCodes,
   excludedCourseCodes,
-  nameMap,
   onPick,
 }: {
   courses: CourseDTO[];
   completedCourseCodes: Set<string>;
   excludedCourseCodes: Set<string>;
-  nameMap: Map<string, string>;
   onPick: (course: CourseDTO) => void;
 }) {
-  if (courses.length === 0) {
+  // Courses missing a prerequisite don't show up in search at all — only
+  // "already picked in another row" stays visible-but-disabled, since
+  // that's a useful signal rather than something to hide.
+  const visibleCourses = courses.filter(
+    (course) => missingPrerequisites(course, completedCourseCodes).length === 0
+  );
+
+  if (visibleCourses.length === 0) {
     return (
       <div className="absolute z-20 mt-1 w-full rounded-lg border border-primary-100 bg-white p-3 text-sm text-primary-400 shadow-lg">
         مفيش نتائج
@@ -43,22 +48,20 @@ function Suggestions({
 
   return (
     <ul className="absolute z-20 mt-1 max-h-64 w-full overflow-y-auto rounded-lg border border-primary-100 bg-white py-1 shadow-lg">
-      {courses.map((course) => {
-        const missing = missingPrerequisites(course, completedCourseCodes);
+      {visibleCourses.map((course) => {
         const alreadyAdded = excludedCourseCodes.has(course.courseCode);
-        const locked = missing.length > 0 || alreadyAdded;
 
         return (
           <li key={course.id}>
             <button
               type="button"
-              disabled={locked}
+              disabled={alreadyAdded}
               onMouseDown={(e) => {
                 e.preventDefault();
-                if (!locked) onPick(course);
+                if (!alreadyAdded) onPick(course);
               }}
               className={`flex w-full flex-col gap-0.5 px-3 py-2 text-right ${
-                locked ? "cursor-not-allowed opacity-60" : "hover:bg-primary-50"
+                alreadyAdded ? "cursor-not-allowed opacity-60" : "hover:bg-primary-50"
               }`}
             >
               <span className="text-sm font-medium text-primary-950">
@@ -69,11 +72,6 @@ function Suggestions({
               {alreadyAdded && (
                 <span className="text-xs font-medium text-danger-600">
                   ✓ المادة دي متسجلة في صف تاني بالفعل
-                </span>
-              )}
-              {!alreadyAdded && missing.length > 0 && (
-                <span className="text-xs font-medium text-danger-600">
-                  🔒 يتطلب: {missing.map((code) => nameMap.get(code) ?? code).join("، ")}
                 </span>
               )}
             </button>
@@ -90,14 +88,12 @@ export function CourseAutocomplete({
   onChange,
   completedCourseCodes,
   excludedCourseCodes,
-  subjectNames,
 }: {
   allCourses: CourseDTO[];
   value: string | null;
   onChange: (courseId: string) => void;
   completedCourseCodes: Set<string>;
   excludedCourseCodes: Set<string>;
-  subjectNames: { courseCode: string; courseName: string }[];
 }) {
   // Remounted (via `key`) whenever the selected course changes from outside
   // (e.g. the "replace with alternative" action), so its local input state
@@ -110,7 +106,6 @@ export function CourseAutocomplete({
       onChange={onChange}
       completedCourseCodes={completedCourseCodes}
       excludedCourseCodes={excludedCourseCodes}
-      subjectNames={subjectNames}
     />
   );
 }
@@ -121,24 +116,17 @@ function CourseAutocompleteInner({
   onChange,
   completedCourseCodes,
   excludedCourseCodes,
-  subjectNames,
 }: {
   allCourses: CourseDTO[];
   value: string | null;
   onChange: (courseId: string) => void;
   completedCourseCodes: Set<string>;
   excludedCourseCodes: Set<string>;
-  subjectNames: { courseCode: string; courseName: string }[];
 }) {
   const selected = useMemo(
     () => allCourses.find((c) => c.id === value) ?? null,
     [allCourses, value]
   );
-  const nameMap = useMemo(
-    () => buildCourseNameMap(allCourses, subjectNames),
-    [allCourses, subjectNames]
-  );
-
   const [nameQuery, setNameQuery] = useState(selected?.courseName ?? "");
   const [codeQuery, setCodeQuery] = useState(selected?.courseCode ?? "");
   const [openField, setOpenField] = useState<"name" | "code" | null>(null);
@@ -178,7 +166,6 @@ function CourseAutocompleteInner({
             courses={nameMatches}
             completedCourseCodes={completedCourseCodes}
             excludedCourseCodes={excludedCourseCodes}
-            nameMap={nameMap}
             onPick={pick}
           />
         )}
@@ -198,7 +185,6 @@ function CourseAutocompleteInner({
             courses={codeMatches}
             completedCourseCodes={completedCourseCodes}
             excludedCourseCodes={excludedCourseCodes}
-            nameMap={nameMap}
             onPick={pick}
           />
         )}
